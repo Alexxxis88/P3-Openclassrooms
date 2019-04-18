@@ -1,0 +1,348 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+    background: #f6f6f6;
+    
+}
+
+h2{
+    font-weight: bold;
+    font-size: 30px;
+    color : white;
+    
+}
+
+
+/* ----- Header ----- */
+#sectionHeader{
+    padding-bottom: 100px;
+    
+}
+header{
+    position: fixed;
+    z-index: 1001;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: space-between;
+    width:100%;
+    height:80px;
+    background: #1a9ae5;  
+}
+
+#logoBicloo{
+    height: 100%;
+    width:200px;
+    margin-left: 50px;
+}
+
+ul{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    list-style: none;
+}
+
+li{
+    margin: 15px 10px 0 10px;
+}
+
+
+.navMenu a{
+    text-decoration: none;
+    color: white; 
+    font-size: 1.3vw;
+    font-family: Arial;
+    font-weight: bold;
+    background: rgba(26,154,229,0.8);
+    padding: 10px 10px 10px 10px;
+    border-radius: 3px;
+    -webkit-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+}
+
+
+.navMenu  a:hover{
+    color: #1a9ae5; 
+    background: rgba(255,255,255,0.9)
+  
+}
+
+
+/* Menu Hamburger */
+
+#burgerMenu{
+    display: none;
+    position: fixed;
+    right:5%;
+    top:3%;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 35px;
+  height: 5px;
+  background-color: white;
+  margin: 6px 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+/* Rotation de la première barre */
+.change .bar1 {
+  -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+  transform: rotate(-45deg) translate(-9px, 6px) ;
+}
+
+/* Estomper la deuxième barre */
+.change .bar2 {
+  opacity: 0;
+}
+
+/* Rotation de la troisieme barre */
+.change .bar3 {
+  -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+  transform: rotate(45deg) translate(-8px, -8px) ;
+}
+
+#burgerNav{
+    display: none;
+    position: fixed;
+    width: 100%;
+    top:80px;
+    z-index: 1001;
+    background: #1a9ae5;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    
+}
+
+#burgerNav ul{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    margin-top: 0;
+}
+
+#burgerNav a{
+    font-size: 2.5vw;
+}
+
+
+
+/* ----- Carrousel ----- */
+
+.carousel-container{
+    position:relative;
+    width: 80vw;
+    margin: 20px auto 0 auto;
+}
+
+.carousel-slide{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;       
+}
+
+.carousel-slide img{
+    width: 80vw;
+    height: 400px;
+}
+
+.carousel-slide img:hover{
+    cursor: pointer;
+}
+
+/* Boutons */
+
+#slideNav{
+    display: -webkit-box; display: -ms-flexbox; display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: flex-end;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin:-4px 0 0 0;
+}
+
+.carouselBtnPlayPause{
+    font-size: 15px;
+    color: black;
+    padding: 5px;
+    cursor: pointer; 
+    text-shadow: 0 1px 1px grey;
+    opacity: 0.9;  
+}
+
+#pauseBtn{
+    font-size: 20px;
+    border: none;
+    background: none ;
+    width:30px;
+    height: 30px;
+    padding: 0;
+}
+
+
+
+
+/* ----- Carte ----- */
+
+
+
+#separateur{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin : 50px 0 0 0 ;
+    width : 100%;
+    height:70px;
+    background: #1a9ae5;
+}
+
+
+.fa{
+    font-size: 25px;
+    color: white;
+    margin : 0 20px 0 50px;  
+}
+
+#biclooMap{
+    margin:auto;
+    height:600px;
+    -webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    border: 1px solid black;
+}
+
+#infoStation{
+    margin:50px auto;
+    height:600px;
+    background: white;
+    -webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    border: 1px solid grey;
+    border-radius: 8px;
+}
+
+
+
+
+input{
+    width:100%;
+}
+
+.reservationBtn{
+    margin-top: 10px;
+    width:50%;
+    color: white; 
+    background: rgba(26,154,229,0.8);
+    padding: 10px 10px 10px 10px;
+    border: 1px solid #1a9ae5;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 4px black;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.7);
+    -webkit-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+}
+
+
+.reservationBtn:hover{
+    color: #1a9ae5; 
+    background: rgba(255,255,255,0.9)
+  
+}
+
+/* ----- Ma réservation ----- */
+
+footer{
+    width : 100%;
+    height:200px;
+    background: #1a9ae5;
+}
+
+#footerTitle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;    
+}
+
+
+#resaInfo{
+    color: white;
+    margin : 0 20px 0 50px; 
+}
+
+/* Media Queries */
+
+
+/* Très grands écrans */
+@media all and (min-width:1280px){
+}
+
+/* Ordinateurs de bureau */
+@media all and (min-width:992px){
+ 
+    #burgerNav{
+    display: none !important; /* il faut rajouter cela sinon le menu ne se referme pas lorsqu'on agrandi la fenêtre à nouveau */
+}
+}
+
+
+/* Tablettes */
+@media all and (max-width:991px){
+       
+    #menuDesktop{
+        display: none;  
+    }
+    
+    #burgerMenu{
+        display: initial;
+    }
+    
+    #separateur{
+        margin : 50px 0 50px 0 ;
+    }
+    
+   
+    
+}
+    
+
+/* Mobiles */
+@media all and (max-width:768px){
+	
+    
+    #burgerNav ul{
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+    }
+    
+    #mapid,#infoStation{
+        margin-right: 20px ;
+        margin-left : 20px ;
+
+    }
+}
+
+
+
+
+
+
+
