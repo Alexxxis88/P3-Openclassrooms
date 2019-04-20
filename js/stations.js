@@ -11,17 +11,17 @@ class Stations {
         this.myMap = myMap;
         this.markersCluster = new L.MarkerClusterGroup();
         this.greenIcon  = L.icon({
-                    iconUrl: 'img/marker-green.png',
+                    iconUrl: "img/marker-green.png",
                     iconSize:     [45, 45],
                     iconAnchor:   [0, 0]
                     });
         this.orangeIcon  = L.icon({
-                    iconUrl: 'img/marker-orange.png',
+                    iconUrl: "img/marker-orange.png",
                     iconSize:     [45, 45],
                     iconAnchor:   [0, 0]
                     });            
         this.redIcon  = L.icon({
-                    iconUrl: 'img/marker-red.png',
+                    iconUrl: "img/marker-red.png",
                     iconSize:     [45, 45],
                     iconAnchor:   [0, 0]
                     });
@@ -58,29 +58,29 @@ class Stations {
             //Affichage des infos dans le panneau Détails
                 this.marker.addEventListener("click", function(){
                     if( station.status === "CLOSED" ){
-                        $(".infoColor").css('background-color','red');
+                        $(".infoColor").css("background-color", "red");
                         document.getElementById("station-status").innerHTML = "";
                         document.getElementById("station-status").innerHTML += "Station fermée";
                         document.getElementById("reservationBtn").style.display = "none" ;
-                        document.getElementById("cancelBtn").style.display = "none" ;
+                        $(".cancelBtn").css("display", "none"); ;
 
                     }
                     else if(station.available_bikes <= 0 ){
-                        $(".infoColor").css('background-color','red');
+                        $(".infoColor").css("background-color", "red");
                         document.getElementById("reservationBtn").style.display = "none" ;
-                        document.getElementById("cancelBtn").style.display = "none" ;
+                        $(".cancelBtn").css("display", "none");
                     }
                     
                     else if(station.available_bikes < station.bike_stands / 2){
-                        $(".infoColor").css('background-color','orange');
+                        $(".infoColor").css("background-color", "orange");
                         document.getElementById("reservationBtn").style.display = "block" ;
-                        document.getElementById("cancelBtn").style.display = "none" ;
+                        $(".cancelBtn").css("display", "none");
                         
                     }
                     else{
-                         $(".infoColor").css('background-color','green');
+                         $(".infoColor").css("background-color", "green");
                         document.getElementById("reservationBtn").style.display = "block" ;
-                        document.getElementById("cancelBtn").style.display = "none" ;
+                        $(".cancelBtn").css("display", "none");
 
                     }
                         document.getElementById("reservationBtn").disabled = false;
@@ -89,7 +89,7 @@ class Stations {
                         document.getElementById("station-status").innerHTML += "Station ouverte";
                     
                         document.getElementById("station-nom").innerHTML = "";
-                        document.getElementById("station-nom").innerHTML += station.name.split('-')[1];
+                        document.getElementById("station-nom").innerHTML += station.name.split("-")[1];
                         
                         document.getElementById("station-adresse").innerHTML = "";
                         document.getElementById("station-adresse").innerHTML += station.address;
@@ -118,33 +118,65 @@ class Stations {
             
             //Actions quand on clique sur le bouton Réserver    
                     document.getElementById("reservationBtn").addEventListener("click", function(){
-                        document.getElementById("cancelBtn").style.display = "block";
-                        document.getElementById("reservationBtn").disabled = true;
                         
-                        currentStation.available_bikes--; // je retire a la station en cours. reste à voir comment la définir dans le 1er paramète de cet ajaxGet
-                        document.getElementById("station-dispo").innerHTML = "";
-                        document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
+                        let firstName = $( "#first_name" ).val();
+                        let lastName = $( "#last_name" ).val()
+                        let correctFormat = /^[a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+([-'\s][a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+){0,}$/i
+                        //^ = début de chaine, $ = fin de chaine, {0,} de zero fois a l'infini, i = insenssible à la casse
                         
-                        //Ajout du texte dans la section "Ma réservation"
-                        document.getElementById("resaName").innerHTML = "";
-                        document.getElementById("resaName").innerHTML = " Bonjour <strong>« prénom » + « nom »</strong>"; //rajouter.bold() a checker  sur autre navigateurs
-                        document.getElementById("resaStation").innerHTML = "";
-                        document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + currentStation.name.split('-')[1].bold();
-                        document.getElementById("resaTimer").innerHTML = "";
-                        document.getElementById("resaTimer").innerHTML = " Votre réservation expirera dans <strong>« temps du timer »</strong>"; //rajouter.bold() a checker  sur autre navigateurs
+                        //Empèche les champs vides
+                        if ( firstName.length === 0 || lastName.length === 0){ 
+                            alert("Merci de remplir les champs PRENOM et NOM")
+                        } 
+                        //Empèche les champs non conformes (tous les caractères autres que lettres, espace et tirets) 
+                        else if ( firstName.length < 2 || lastName.length < 2 ||
+                                !correctFormat.test(firstName) || !correctFormat.test(lastName)){   
+                                alert("Verifiez les informations NOM et PRENOM")
+                        }
+                        
+                        else{               
+                            $(".cancelBtn").css("display", "block");
+                            document.getElementById("reservationBtn").disabled = true;
 
-                    
+                            currentStation.available_bikes--; // je retire a la station en cours. reste à voir comment la définir dans le 1er paramète de cet ajaxGet
+                            document.getElementById("station-dispo").innerHTML = "";
+                            document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
+
+                            //Désactive les inputs
+                            $( ":text" ).css("display", "none");
+
+                            //Récupération du nom et prénom
+                            let lastName = document.getElementById("last_name").value;
+                            let firstName = document.getElementById("first_name").value;
+
+                            //Ajout du texte dans la section "Ma réservation"
+                            document.getElementById("resaName").innerHTML = "";
+                            document.getElementById("resaName").innerHTML = "Bonjour " + firstName.bold() + " " + lastName.bold() //rajouter.bold() a checker  sur autre navigateurs
+                            document.getElementById("resaStation").innerHTML = "";
+                            document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + currentStation.name.split("-")[1].bold();
+                            document.getElementById("resaTimer").innerHTML = "";
+                            document.getElementById("resaTimer").innerHTML = "Votre réservation expirera dans <strong>« temps du timer »</strong>"; //rajouter.bold() a checker  sur autre navigateurs
+                        }
+
+                        
+                        
                 });
                 
             //Actions quand on clique sur le bouton Annuler
-                    document.getElementById("cancelBtn").addEventListener("click", function(){
-                        document.getElementById("cancelBtn").style.display = "none";
+                    $(".cancelBtn").on( "click", function(){
+                        $(".cancelBtn").css("display", "none");
                         document.getElementById("reservationBtn").disabled = false;
 
                         currentStation.available_bikes++; // j'ajoute a la station en cours. reste à voir comment la définir dans le 1er paramète de cet ajaxGet
                         document.getElementById("station-dispo").innerHTML = "";
                         document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
                         
+                        
+                        //Désactive les inputs
+                        $( ":text" ).css("display", "block");
+
+                        
+                        //Retire le texte de "Ma réservation"
                         document.getElementById("resaName").innerHTML = "";
                         document.getElementById("resaName").innerHTML = "Vous n'avez aucune réservation en cours";
                         document.getElementById("resaStation").innerHTML = "";
@@ -157,9 +189,4 @@ class Stations {
     }  
 }
 
-//Récupérer la liste des stations d'un contrat 
-//https://api.jcdecaux.com/vls/v1/stations?contract={contract_name} 
 
-
-//Récupérer les infos d'une station
-//https://api.jcdecaux.com/vls/v1/stations/{station_number}?contract={contract_name} 
