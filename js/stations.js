@@ -32,12 +32,12 @@ class Stations {
 //                    });
         this.marker = [];
         // Code pour récupérer les informations de toutes les stations 
-        ajaxGet(this.apiURL + "contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
+        ajaxGet(this.apiURL + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
             let allStations = JSON.parse(data);
             allStations.forEach((station) => {
                 
                 
-            //Couleur des marqueurs en fonction du nb de vélos dispos des marqueurs en fonction de leur
+            //Couleur des marqueurs en fonction du nb de vélos 
                 if(station.available_bikes === 0 || station.status === "CLOSED" ) { // 0 vélo disponible ou station fermée
 //                    this.markerColor = "-red";
 
@@ -60,20 +60,31 @@ class Stations {
                     if( station.status === "CLOSED" ){
                         $(".infoColor").css('background-color','red');
                         document.getElementById("station-status").innerHTML = "";
-                        document.getElementById("station-status").innerHTML += "Station fermée";   
+                        document.getElementById("station-status").innerHTML += "Station fermée";
+                        document.getElementById("reservationBtn").style.display = "none" ;
+                        document.getElementById("cancelBtn").style.display = "none" ;
+
                     }
-                    else if(station.available_bikes === 0){
+                    else if(station.available_bikes <= 0 ){
                         $(".infoColor").css('background-color','red');
-                        
+                        document.getElementById("reservationBtn").style.display = "none" ;
+                        document.getElementById("cancelBtn").style.display = "none" ;
                     }
                     
                     else if(station.available_bikes < station.bike_stands / 2){
                         $(".infoColor").css('background-color','orange');
+                        document.getElementById("reservationBtn").style.display = "block" ;
+                        document.getElementById("cancelBtn").style.display = "none" ;
                         
                     }
                     else{
                          $(".infoColor").css('background-color','green');
+                        document.getElementById("reservationBtn").style.display = "block" ;
+                        document.getElementById("cancelBtn").style.display = "none" ;
+
                     }
+                        document.getElementById("reservationBtn").disabled = false;
+                    
                         document.getElementById("station-status").innerHTML = "";
                         document.getElementById("station-status").innerHTML += "Station ouverte";
                     
@@ -87,12 +98,68 @@ class Stations {
                         document.getElementById("station-capacite").innerHTML += station.bike_stands;
                     
                         document.getElementById("station-dispo").innerHTML = "";
-                        document.getElementById("station-dispo").innerHTML += station.available_bikes;
-                    
+                        document.getElementById("station-dispo").innerHTML += station.available_bikes;  
                 });
+                
+                
+             
+                
+                
             })
         }.bind(this));
+        
+        
+        
+                // Code pour définir la sation sélectionnée
+
+        ajaxGet(this.apiURL + "/" + "5" + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
+            let currentStation = JSON.parse(data);
+            
+            
+            //Actions quand on clique sur le bouton Réserver    
+                    document.getElementById("reservationBtn").addEventListener("click", function(){
+                        document.getElementById("cancelBtn").style.display = "block";
+                        document.getElementById("reservationBtn").disabled = true;
+                        
+                        currentStation.available_bikes--; // je retire a la station en cours. reste à voir comment la définir dans le 1er paramète de cet ajaxGet
+                        document.getElementById("station-dispo").innerHTML = "";
+                        document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
+                        
+                        //Ajout du texte dans la section "Ma réservation"
+                        document.getElementById("resaName").innerHTML = "";
+                        document.getElementById("resaName").innerHTML = " Bonjour <strong>« prénom » + « nom »</strong>"; //rajouter.bold() a checker  sur autre navigateurs
+                        document.getElementById("resaStation").innerHTML = "";
+                        document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + currentStation.name.split('-')[1].bold();
+                        document.getElementById("resaTimer").innerHTML = "";
+                        document.getElementById("resaTimer").innerHTML = " Votre réservation expirera dans <strong>« temps du timer »</strong>"; //rajouter.bold() a checker  sur autre navigateurs
+
+                    
+                });
+                
+            //Actions quand on clique sur le bouton Annuler
+                    document.getElementById("cancelBtn").addEventListener("click", function(){
+                        document.getElementById("cancelBtn").style.display = "none";
+                        document.getElementById("reservationBtn").disabled = false;
+
+                        currentStation.available_bikes++; // j'ajoute a la station en cours. reste à voir comment la définir dans le 1er paramète de cet ajaxGet
+                        document.getElementById("station-dispo").innerHTML = "";
+                        document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
+                        
+                        document.getElementById("resaName").innerHTML = "";
+                        document.getElementById("resaName").innerHTML = "Vous n'avez aucune réservation en cours";
+                        document.getElementById("resaStation").innerHTML = "";
+                        document.getElementById("resaTimer").innerHTML = "";
+
+                });     
+                
+                })
+        
     }  
 }
 
+//Récupérer la liste des stations d'un contrat 
+//https://api.jcdecaux.com/vls/v1/stations?contract={contract_name} 
 
+
+//Récupérer les infos d'une station
+//https://api.jcdecaux.com/vls/v1/stations/{station_number}?contract={contract_name} 

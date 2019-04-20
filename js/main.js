@@ -50,4 +50,4 @@ let biclooMap = new Map("biclooMap",[47.2172500, -1.5533600],"https://{s}.basema
 
 // Instanciation de l'objet Stations
 
-let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations?", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooMap);
+let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooMap);

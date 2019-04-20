@@ -144,14 +144,17 @@
                                         <td id="station-capacite" class="station-infos"></td>
                                     </tr>
                                     <tr>
-                                        <td class="station-titre">Vélo disponible</td>
+                                        <td class="station-titre">Vélo(s) disponible(s)</td>
                                         <td class="station-infos"><span id="station-dispo" class="infoColor"></span></td>
                                     </tr>
                                 </tbody>
                             </table>    
                             <p><input type="text" name="nom" placeholder="Renseignez votre nom" id="last_name" required></p>
                             <p><input type="text" name="prenom" placeholder="Renseignez votre prénom" id="first_name" required></p>
-                            <button class="reservationBtn"> Réserver</button>
+                            <div id="bothBtns">   
+                                <button id="reservationBtn"> Réserver</button>
+                                <button id="cancelBtn"> Annuler</button>
+                            </div>    
                     </aside>
                 </div>
             </div>
@@ -165,8 +168,9 @@
                 <i class="fa fa-info-circle"></i> <h2>Ma réservation</h2>
             </div>
             <div id="resaInfo">
-                <p> Vous avez une réservation en cours à la station : </p>
-                <p> Votre réservation expirera dans </p>
+                <p id="resaName"> Vous n'avez aucune réservation en cours </p>
+                <p id="resaStation"> </p>
+                <p id="resaTimer">  </p>
             </div>    
         </footer> 
         
