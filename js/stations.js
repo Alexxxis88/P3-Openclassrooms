@@ -64,19 +64,20 @@ class Stations {
                         document.getElementById("station-status").innerHTML += "Station fermée";
                         document.getElementById("reservationBtn").style.display = "none" ;
                         $(".infoResaBtn").css("display", "none"); ;
-
+                        $("#thanksText").css("display", "none");
                     }
                     else if(station.available_bikes <= 0 ){
                         $(".infoColor").css("background-color", "red");
                         document.getElementById("reservationBtn").style.display = "none" ;
                         $(".infoResaBtn").css("display", "none");
-                        
+                        $("#thanksText").css("display", "none");
                     }
                     
                     else if(station.available_bikes < station.bike_stands / 2){
                         $(".infoColor").css("background-color", "orange");
                         document.getElementById("reservationBtn").style.display = "block" ;
                         $(".infoResaBtn").css("display", "none");
+                        $("#thanksText").css("display", "none");
                         $( ":text" ).css("display", "block");
 
                         
@@ -85,6 +86,7 @@ class Stations {
                          $(".infoColor").css("background-color", "green");
                         document.getElementById("reservationBtn").style.display = "block" ;
                         $(".infoResaBtn").css("display", "none");
+                        $("#thanksText").css("display", "none");
                         $( ":text" ).css("display", "block");
 
 

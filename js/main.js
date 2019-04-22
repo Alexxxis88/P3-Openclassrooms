@@ -59,11 +59,40 @@ let biclooMap = new Map("biclooMap",[47.2172500, -1.5533600],"https://{s}.basema
 let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooMap);
 
 // ------------------------------------- //
-// -------------- Reservation -------------- //
+// ------------ Reservation ------------ //
 // ------------------------------------- //
 
 
 // Instanciation de l'objet Reservation
 
 let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81")
+
+
+// ------------------------------------- //
+// --------- Gestion du Storage -------- //
+// ------------------------------------- //
+
+//Sauvegarde du prénom et nom
+$("#first_name" ).keyup( function() {
+ localStorage.setItem("LSfirstName", $("#first_name" ).val());
+});
+
+
+if (localStorage.getItem("LSfirstName")){
+     document.getElementById("first_name").value = localStorage.getItem("LSfirstName"); 
+    //pour $("#first_name" ).val() ne marche pas a la place de document.getElementById("first_name").value
+}
+
+
+
+$("#last_name" ).keyup( function() {
+ localStorage.setItem("LSlastName", $("#last_name").val());
+});
+
+
+if (localStorage.getItem("LSlastName") ){
+     document.getElementById("last_name").value = localStorage.getItem("LSlastName"); 
+    //pour $("#first_name" ).val() ne marche pas a la place de document.getElementById("first_name").value
+}
+
 

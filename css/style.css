@@ -308,6 +308,12 @@ input{
     max-width: 250px;
 }
 
+#thanksText{
+    display: none;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 25px;
+}
 
 /* ----- Ma réservation ----- */
 
