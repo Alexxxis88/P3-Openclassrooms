@@ -10,6 +10,19 @@ class Stations {
         this.apiKey = apiKey;
         this.myMap = myMap;
         this.marker = [];
+        
+        
+        
+        
+        //sert a envoyer le numéro de stations dans reservation.js
+        this.stationNumber = []; //PROBLEME : ne se rempli pas comme je le voudrai a chaque fois qu'on click sur un marquer (ligne 105). est ce que ce                              this.stationNumber est le même que celui ligne 105?
+        
+        
+        
+        
+        
+        
+        
         this.markersCluster = new L.MarkerClusterGroup();
         this.greenIcon  = L.icon({
                     iconUrl: "img/marker-green.png",
@@ -91,6 +104,20 @@ class Stations {
 
 
                     }
+                    
+                    
+                    
+                    
+                    
+ //PROBLEME          //sauvegarde du numéro de station sélectionné  this.stationNumber pour l'appeler dans reservation.js via this.selectedStation
+                        this.stationNumber = station.number;
+//                        console.log(this.stationNumber);
+                    
+                    
+                    
+                    
+                    
+                    
                         document.getElementById("reservationBtn").disabled = false;
                     
                         document.getElementById("station-status").innerHTML = "";
