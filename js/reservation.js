@@ -1,26 +1,30 @@
 class Reservation {
     // Code pour définir la sation sélectionnée
-    constructor(apiURL, contractName, apiKey, allstations){
+    constructor(apiURL, stationNumber, contractName, apiKey, allstations){
         this.apiURL = apiURL;
         this.contractName = contractName;
         this.apiKey = apiKey;
+        this.stationNumber = stationNumber;
         
         
         
         
-        
-        this.allstations = allstations; //PROBLEME   récupère toutes les stations de stations.js
-        this.selectedStation = this.allstations.stationNumber; //PROBLEME   récupère le numéro de station défini dans stations.js --- ne marche pas comme je veux, car le numéro de station this.stationNumber = [] doit changer quand on click sur un marker, avec le numéro de la station associée au lieu de [] . 
-        //fonctionne pour une station donnée si je remplace [] par un numéro de station arbitraire (ex "5"), mais la réservation ne va se faire que pour la station en question, donc affichage dans le footer et décrémentation du nombre de vélo
-        
+        this.allstations = allstations; // récupère toutes les stations de stations.js
+//        this.selectedStation = this.allstations.stationNumber; //PROBLEME   récupère bien le numéro de station défini dans stations.js MAIS le numéro de station this.stationNumber = [] doit changer DANS L'URL DU AJAXGET CI DESSOU à chaque clic sur un marker, avec le numéro de la station associée au lieu de [] . 
+////        this.testbuttonvalue = "test"
         
         
+        // A SUPPRIMER bouton de control this.selectedStation
+        document.getElementById("testbtnselectedStation").addEventListener("click", () =>{
+                console.log( this.stationNumber)
+                });
         
         
         
-        
-        ajaxGet(this.apiURL + "/" + this.selectedStation + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
+        ajaxGet(this.apiURL + "/" + this.stationNumber + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
             let currentStation = JSON.parse(data);
+            
+            
             
             
             //Si on a déja une réservation en cours dans sessionStorage
@@ -123,6 +127,15 @@ class Reservation {
                     sessionStorage.clear();
 //                      currentStation.available_bikes++; //pas sur que ça marche car peut etre pas la bonne station, peut etre mettre un last station ? 
                 });         
-        })
+        }.bind(this))
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 }

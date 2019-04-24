@@ -9,21 +9,25 @@ class Stations {
         this.contractName = contractName;
         this.apiKey = apiKey;
         this.myMap = myMap;
-        this.marker = [];
-        
+//        this.marker = []; inutile ???
+        this.markersCluster = new L.MarkerClusterGroup();
+
         
         
         
         //sert a envoyer le numéro de stations dans reservation.js
-        this.stationNumber = []; //PROBLEME : ne se rempli pas comme je le voudrai a chaque fois qu'on click sur un marquer (ligne 105). est ce que ce                              this.stationNumber est le même que celui ligne 105?
+        this.selectedStationNumber = []; //PROBLEME RESOLU: ne se rempli pas comme je le voudrai a chaque fois qu'on click sur un marquer (ligne 105). est ce que ce                              this.stationNumber est le même que celui ligne 105?
+                                    
+                                // MAIS : pourquoi en changeant ligne 85 function() par () => ça marche ? Car () =>ne possède pas ses propres valeurs pour this  ?
+        
+        
+        //A SUPPRIMER, sert à voir que la valeur de this.stationNumber change bien dans le constructeur (???)
+        document.getElementById("testbtnselectedStationNumber").addEventListener("click", () =>{
+                    console.log(this.selectedStationNumber);
+        });
         
         
         
-        
-        
-        
-        
-        this.markersCluster = new L.MarkerClusterGroup();
         this.greenIcon  = L.icon({
                     iconUrl: "img/marker-green.png",
                     iconSize:     [45, 45],
@@ -69,8 +73,19 @@ class Stations {
                 this.myMap.mapTemplate.addLayer(this.markersCluster); //ajout des marqueurs au layer markersCluster
                 
                 
+                
+                
+                
+               
+                                                                
+                
+                
+                
+                
+                
+                
             //Affichage des infos dans le panneau Détails
-                this.marker.addEventListener("click", function(){
+                this.marker.addEventListener("click", () => {
                     if( station.status === "CLOSED" ){
                         $(".infoColor").css("background-color", "red");
                         document.getElementById("station-status").innerHTML = "";
@@ -110,8 +125,14 @@ class Stations {
                     
                     
  //PROBLEME          //sauvegarde du numéro de station sélectionné  this.stationNumber pour l'appeler dans reservation.js via this.selectedStation
-                        this.stationNumber = station.number;
-//                        console.log(this.stationNumber);
+//                        this.stationNumber = station.number;
+////                        console.log(this.stationNumber);
+                            //A SUPPRIMER, POUR UN TEST ICI
+//                document.getElementById("testbtn").addEventListener("click", function(){
+//                    console.log(this.stationNumber);
+                     this.selectedStationNumber = station.number; 
+//                    console.log(this.stationNumber);
+//                });
                     
                     
                     
@@ -138,6 +159,11 @@ class Stations {
             })
         }.bind(this));
               
+        
+        
+        
+        
+        
         
     }  
 }
