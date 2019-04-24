@@ -10,18 +10,28 @@ class Reservation {
         
         
         this.allstations = allstations; // récupère toutes les stations de stations.js
-//        this.selectedStation = this.allstations.stationNumber; //PROBLEME   récupère bien le numéro de station défini dans stations.js MAIS le numéro de station this.stationNumber doit changer DANS L'URL DU AJAXGET CI DESSOU à chaque clic sur un marker, avec le numéro de la station associée au lieu de [] . 
+//        this.selectedStation = this.allstations.selectedStationNumber; //PROBLEME   récupère bien le numéro de station défini dans stations.js MAIS le numéro de station this.stationNumber = [] doit changer DANS L'URL DU AJAXGET CI DESSOU à chaque clic sur un marker, avec le numéro de la station associée au lieu de [] . 
 ////        this.testbuttonvalue = "test"
         
         
-        // A SUPPRIMER bouton de control this.stationNumber
-        document.getElementById("testbtnselectedStation").addEventListener("click", () =>{
-                console.log( this.stationNumber)
-                });
+        // A SUPPRIMER bouton de control this.selectedStation
+        document.getElementById("testbtnselectedStation").addEventListener("click", function(){
+                console.log( this.allstations.selectedStationNumber)
+                }.bind(this));
         
         
         
-        ajaxGet(this.apiURL + "/" + this.stationNumber + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
+        ajaxGet(this.apiURL + "/" + this.allstations.selectedStationNumber + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function(data) {
+            
+            
+            // A SUPPRIMER bouton de control this.selectedStation dans AJAX
+        document.getElementById("testbtnselectedStationAJAX").addEventListener("click", function(){
+                console.log( this.allstations.selectedStationNumber)
+                }.bind(this));
+            
+            
+            
+            
             let currentStation = JSON.parse(data);
             
             
@@ -47,6 +57,8 @@ class Reservation {
             
             //Actions quand on clique sur le bouton Réserver    
                 document.getElementById("reservationBtn").addEventListener("click", function(){
+                    
+                    
                         
                 //Si une réservation est déja présent, on alerte le visiteur    
                     if (sessionStorage.getItem("SSstationName") && 
