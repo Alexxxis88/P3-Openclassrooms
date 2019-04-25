@@ -65,7 +65,10 @@ let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "N
 
 // Instanciation de l'objet Reservation
 
+
+
 let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooStations)
+
 
 
 // ------------------------------------- //
