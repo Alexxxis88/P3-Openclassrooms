@@ -1,69 +1,96 @@
-//var timeInMinutes = 1;
-//var currentTime = Date.parse(new Date());
-////var deadline = new Date(currentTime + timeInMinutes*60*1000);
-
+// ------------------------------------- //
+// --------------- Timer  -------------- //
+// ------------------------------------- //
 
 class Timer{
-    
-    constructor(){
-
-            // if there's a cookie with the name myClock, use that value as the deadline
-        if(sessionStorage.getItem("clock")){
-          // get deadline value from cookie
-          var deadline = sessionStorage.getItem("clock");
-        }
-
-        // otherwise, set a deadline 10 minutes from now and 
-        // save it in a cookie with that name
-        else{
-          // create deadline 10 minutes from now
-          var timeInMinutes = 59;
-          var currentTime = Date.parse(new Date());
-          var deadline = new Date(currentTime + timeInMinutes*60*1000);
-
-          // store deadline in cookie for future reference
-          sessionStorage.setItem("clock", deadline);
-        }
-
-
-
-        function getTimeRemaining(endtime){
-          var t = Date.parse(endtime) - Date.parse(new Date());
-          var seconds = Math.floor( (t/1000) % 60 );
-          var minutes = Math.floor( (t/1000/60) % 60 );
-          return {
-            'total': t,
-            'minutes': minutes,
-            'seconds': seconds
-          };
-        }
-
-
-        function initializeClock(id, endtime){
-          var clock = document.getElementById(id);
-          var timeinterval = setInterval(function(){
-            var t = getTimeRemaining(endtime);
-            clock.innerHTML = ('0' + t.minutes).slice(-2) +  ':' + ('0' + t.seconds).slice(-2)
-            if(t.total<=0){
-              clearInterval(timeinterval);
-              document.getElementById("resaTimer").innerHTML = "";
-              document.getElementById("resaTimerText").innerHTML = "Votre réservation a expiré.";   
-            }
-          },1000);
-        }
-
-
-
-        //Actions quand on clique sur le bouton Réserver    
-            document.getElementById("reservationBtn").addEventListener("click", function(){
-                initializeClock('resaTimer', deadline);})
-
-        //Actions quand on clique sur le bouton Annuler
-            $(".cancelBtn").on( "click", function(){ 
-                
-            })                                      
-
+    constructor(id,counter){
+        this.idTimer = id;
+        this.counter = counter;
+        this.timeInterval = [];
+        this.flag = [];
+        this.delayedExpired = []; //pour faire disparaitre "Votre réservation a expiré" après 3 secondes        
+        this.minutes = [];
+        this.secondes = [];
+        this.remainingTime = []; // voir plus bas pour explication
     }
+    
+
+    startTimer(){
+    this.timeInterval = setInterval(this.runTimer.bind(this), 1000);
+    }
+     
+    runTimer(){  
+        if (this.counter >= 0) {
+            this.flag = "running"
+            this.counter--;
+            this.minutes = Math.floor(this.counter / 60);
+            this.secondes = this.counter - this.minutes * 60;
+            
+            if(this.secondes < 10){
+               this.secondes = "0" + this.secondes
+            }
+            
+            if(this.minutes < 10){
+               this.minutes = "0" + this.minutes
+            }
+            
+            this.remainingTime = this.minutes + ":" + this.secondes; // voir plus bas pour explication je rajoute cette étape au lieu de mettre directement this.minutes + ":" + this.secondes; a la ligne d'en dessous pour éviter que après avoir rechargé la page, seul les deux points ":" s'affichent avant que les valeurs this.minutes et this.secondes soit récupérer. C'est purement esthétique.
+            document.getElementById("resaTimer").innerHTML = this.remainingTime;
+            sessionStorage.setItem("SStimer", this.counter);
+        }
+        
+        if (this.counter === 0) {
+            clearInterval(this.timeInterval);
+            
+            ///tout le bloc suivant *** *** même action que le bouton annuler. On peut peut être regrouper les actions sur le bouton annuler dans une méthode dans la classe réservation et plutot que copier / coller le code ici on appelle juste cette méthode cancelReservation() ?
+            
+            ///***
+            $(".cancelBtn").css("display", "none");
+            document.getElementById("reservationBtn").disabled = false;
+
+            //vu que l'on est plus dans l'ajaxGet on ne peut plus utiliser currentStation.available_bikes pour mettre à jour la valeur donc on récupère la valeur html du champ "velo disponible", on le converti en nombre et on lui ajoute 1
+            document.getElementById("station-dispo").innerHTML = Number(document.getElementById("station-dispo").innerHTML) + 1;
+
+            //Active les inputs
+            $( ":text" ).css("display", "block");
+            $("#thanksText").css("display", "none");
+
+            //Retire le texte de "Ma réservation"
+            document.getElementById("resaName").innerHTML = "";
+            document.getElementById("resaName").innerHTML = "Vous n'avez aucune réservation en cours";
+            document.getElementById("resaStation").innerHTML = "";
+            document.getElementById("resaTimerText").innerHTML = "";
+
+
+            //Supprimer de la réservation du sessionStorage
+            sessionStorage.clear();
+            
+            //***
+            
+            
+            document.getElementById("resaTimer").innerHTML = "";
+            document.getElementById("resaTimerText").innerHTML = "Votre réservation a expiré.";
+            
+            // Fait disparaitre "Votre réservation a expiré" après 3 secondes
+            this.delayedExpired = setTimeout(this.hideExpired.bind(this), 3000);
+        }
+    }
+    
+    stopTimer(){
+        clearInterval(this.timeInterval);
+        this.flag = "stopped"
+        this.counter = 1200; // fonctionne mais perd se son coté réutilisable en objet car si je veux un autre timer c'est hard codé ici. Trouver une autre solution
+        document.getElementById("resaTimer").innerHTML = "";
+        document.getElementById("resaTimerText").innerHTML = "";
+    }
+    
+    // Methode pour faire disparaitre "Votre réservation a expiré" après 3 secondes
+    hideExpired(){
+        document.getElementById("resaTimerText").innerHTML = "";
+    }  
 }
 
-let timer = new Timer("resaTimer");
+
+
+
+

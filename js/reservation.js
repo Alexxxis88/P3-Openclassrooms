@@ -1,128 +1,137 @@
+// ------------------------------------- //
+// ------------ Reservation  ----------- //
+// ------------------------------------- //
+
 class Reservation {
     // Code pour définir la sation sélectionnée
     constructor(apiURL, contractName, apiKey, allstations){
         this.apiURL = apiURL;
         this.contractName = contractName;
         this.apiKey = apiKey;
+        this.allstations = allstations; // correspond à l'objet biclooStations de la classe Stations
         
         
+        this.delayedThanks = []  //pour faire disparaitre "merci pour votre réservation" après 3 secondes
         
-        
-        
-        this.allstations = allstations; //PROBLEME   récupère toutes les stations de stations.js
-        this.selectedStation = this.allstations.stationNumber; //PROBLEME   récupère le numéro de station défini dans stations.js --- ne marche pas comme je veux, car le numéro de station this.stationNumber = [] doit changer quand on click sur un marker, avec le numéro de la station associée au lieu de [] . 
-        //fonctionne pour une station donnée si je remplace [] par un numéro de station arbitraire (ex "5"), mais la réservation ne va se faire que pour la station en question, donc affichage dans le footer et décrémentation du nombre de vélo
-        
-        
-        
-        
-        
-        
-        
-        ajaxGet(this.apiURL + "/" + this.selectedStation + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
-            let currentStation = JSON.parse(data);
-            
-            
-            //Si on a déja une réservation en cours dans sessionStorage
-                    if (sessionStorage.getItem("SSstationName") && 
-                        sessionStorage.getItem("SSavailableBike") &&
-                        localStorage.getItem("LSfirstName") &&
-                        localStorage.getItem("LSlastName")){  
-                        
-                        //Ajout des infos de sessionStorage dans la section "Ma réservation"
-                        document.getElementById("resaName").innerHTML = "";
-                        document.getElementById("resaName").innerHTML = "Bonjour " + localStorage.getItem("LSfirstName").toUpperCase().bold() + " " + localStorage.getItem("LSlastName").toUpperCase().bold() //rajouter.bold() a checker  sur autre navigateurs
-                        document.getElementById("resaStation").innerHTML = "";
-                        document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + sessionStorage.getItem("SSstationName").bold();
-                        document.getElementById("resaTimerText").innerHTML = "";
-                        document.getElementById("resaTimerText").innerHTML = "Votre réservation expirera dans &nbsp;"; //rajouter.bold() a checker  sur autre navigateurs
-                        $(".footerBtn").css("display", "block");       
-                    }
+        //Actions quand on clique sur le bouton Réserver    
+        document.getElementById("reservationBtn").addEventListener("click", function(){
             
             
             
-            //Actions quand on clique sur le bouton Réserver    
-                document.getElementById("reservationBtn").addEventListener("click", function(){
-                        
-                //Si une réservation est déja présent, on alerte le visiteur    
-                    if (sessionStorage.getItem("SSstationName") && 
-                    sessionStorage.getItem("SSavailableBike") &&
-                    localStorage.getItem("LSfirstName") &&
-                    localStorage.getItem("LSlastName")){
-                        alert("Attention, vous avez déjà une réservation en cours à la station " + sessionStorage.getItem("SSstationName") + "." +
-                              "\n" + "\nCette nouvelle réservation annule l'ancienne.")
-                    }
-
-                    let firstName = $( "#first_name" ).val();
-                    let lastName = $( "#last_name" ).val()
-                    let correctFormat = /^[a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+([-'\s][a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+){0,}$/i
-                    //^ = début de chaine, $ = fin de chaine, {0,} de zero fois a l'infini, i = insenssible à la casse
-
-                    //Empèche les champs vides
-                    if ( firstName.length === 0 || lastName.length === 0){ 
-                        alert("Merci de remplir les champs PRENOM et NOM")
-                    } 
-                    //Empèche les champs non conformes (tous les caractères autres que lettres, espace et tirets) 
-                    else if ( firstName.length < 2 || lastName.length < 2 ||
-                            !correctFormat.test(firstName) || !correctFormat.test(lastName)){   
-                            alert("Vérifiez les champs NOM et PRENOM")
-                    }
-
-                    else{
-                                        
-                        
-                        $(".cancelBtn").css("display", "block");
-                        document.getElementById("reservationBtn").disabled = true;
-
-                        currentStation.available_bikes--; // je retire a la station en cours. reste à voir comment la définir dans le 1er paramète de cet ajaxGet
-                        document.getElementById("station-dispo").innerHTML = "";
-                        document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
-
-                        //Désactive les inputs & remerciements
-                        $(":text" ).css("display", "none");
-                        $("#thanksText").css("display", "block");
-
-                        //Ajout du texte dans la section "Ma réservation"
-                        document.getElementById("resaName").innerHTML = "";
-                        document.getElementById("resaName").innerHTML = "Bonjour " + localStorage.getItem("LSfirstName").toUpperCase().bold() + " " + localStorage.getItem("LSlastName").toUpperCase().bold() //rajouter.bold() a checker  sur autre navigateurs
-                        document.getElementById("resaStation").innerHTML = "";
-                        document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + currentStation.name.split("-")[1].bold();
-                        document.getElementById("resaTimerText").innerHTML = "";
-                        document.getElementById("resaTimerText").innerHTML = "Votre réservation expirera dans &nbsp;"; 
-                       
-
-                        //Sauvegarde de la réservation dans sessionStorage
-                        sessionStorage.setItem("SSstationName", currentStation.name.split("-")[1]);
-                        sessionStorage.setItem("SSavailableBike", currentStation.available_bikes); // ne marche pas ?                
-
-                    }
-                });
+            //Lancement du le timer
+            if(timer.flag === "running"){ //si le timmer est déja en cours, on le stop puis on le relance
+                timer.stopTimer()
+                timer.startTimer();
+            }
+            else{ //s'il n'est pas déja en cours, on le lance
+                 timer.startTimer();
+            }
                 
-            //Actions quand on clique sur le bouton Annuler
-                $(".cancelBtn").on( "click", function(){
-                    $(".cancelBtn").css("display", "none");
-                    document.getElementById("reservationBtn").disabled = false;
+           
+           
+            
+            
+            
+            
+            
+            ajaxGet(this.apiURL + "/" + this.allstations.selectedStationNumber + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function(data) {
+                let currentStation = JSON.parse(data);
+                    
+                //Si une réservation est déja présent, on alerte le visiteur    
+                if (sessionStorage.getItem("SSstationName") &&  
+                sessionStorage.getItem("SSavailableBike") &&
+                localStorage.getItem("LSfirstName") &&
+                localStorage.getItem("LSlastName")){
+                    alert("Attention, vous avez déjà une réservation en cours à la station " + sessionStorage.getItem("SSstationName") + "." +
+                          "\n" + 
+                          "\nCette nouvelle réservation annule l'ancienne.")
+                }
+                
+                //Vérification de la conformité du Prénom et Nom
+                let firstName = $("#first_name").val();
+                let lastName = $("#last_name").val()
+                let correctFormat = /^[a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+([-'\s][a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+){0,}$/i
+                //^ = début de chaine, $ = fin de chaine, {0,} de zero fois a l'infini, i = insenssible à la casse
 
-                    currentStation.available_bikes++; // j'ajoute a la station en cours. reste à voir comment la définir dans le 1er paramète de cet ajaxGet
+                //Empèche les champs vides
+                if (firstName.length === 0 || lastName.length === 0){ 
+                    alert("Merci de remplir les champs PRENOM et NOM")
+                } 
+                
+                //Empèche les champs non conformes (tous les caractères autres que lettres, espaces, apostrophes et tirets) 
+                else if (firstName.length < 2 || lastName.length < 2 || !correctFormat.test(firstName) || !correctFormat.test(lastName)){   
+                        alert("Vérifiez les champs NOM et PRENOM")
+                }
+
+                else{
+                    $(".cancelBtn").css("display", "block");
+                    document.getElementById("reservationBtn").disabled = true;
+
+                    currentStation.available_bikes--;
                     document.getElementById("station-dispo").innerHTML = "";
                     document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
 
+                    //Désactive les inputs & active remerciements
+                    $(":text" ).css("display", "none");
+                    $("#thanksText").css("display", "block");
+                    
+                    // Fait disparaitre "merci pour votre réservation" après 3 secondes
+                    this.delayedThanks = setTimeout(this.hideThanks.bind(this), 3000);
+                    
+                    
+                    
+                    
 
-                    //Active les inputs
-                    $( ":text" ).css("display", "block");
-                    $("#thanksText").css("display", "none");
-
-                    //Retire le texte de "Ma réservation"
+                    //Ajout du texte dans la section "Ma réservation"
                     document.getElementById("resaName").innerHTML = "";
-                    document.getElementById("resaName").innerHTML = "Vous n'avez aucune réservation en cours";
+                    document.getElementById("resaName").innerHTML = "Bonjour " + localStorage.getItem("LSfirstName").toUpperCase().bold() + " " + localStorage.getItem("LSlastName").toUpperCase().bold() //rajouter.bold() a checker  sur autre navigateurs
                     document.getElementById("resaStation").innerHTML = "";
+                    document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + currentStation.name.split("-")[1].bold();
                     document.getElementById("resaTimerText").innerHTML = "";
+                    document.getElementById("resaTimerText").innerHTML = "Votre réservation expirera dans&nbsp;"; 
+
+                    //Sauvegarde de la réservation dans sessionStorage
+                    sessionStorage.setItem("SSstationName", currentStation.name.split("-")[1]);
+                    sessionStorage.setItem("SSavailableBike", currentStation.available_bikes--);  //sauvegarde le nombre de vélo - 1 pour palier au fait que l'on ne puisse pas envoyer d'info au serveur, donc on récupère ensuite via getItem(SSavailableBike) la "vraie" valeur théorique et non celle de l'API JC decaux qui n'a pas pris en compte la réservation (-1)            
+                }
+            }.bind(this))     
+        }.bind(this));
+        
+        
+        //Actions quand on clique sur le bouton Annuler
+        $(".cancelBtn").on( "click", function(){
+            
+            
+            
+            //on stop le timer 
+            timer.stopTimer();
+            
+
+            $(".cancelBtn").css("display", "none");
+            document.getElementById("reservationBtn").disabled = false;
+
+            //vu que l'on est plus dans l'ajaxGet on ne peut plus utiliser currentStation.available_bikes pour mettre à jour la valeur donc on récupère la valeur html du champ "velo disponible", on le converti en nombre et on lui ajoute 1
+            document.getElementById("station-dispo").innerHTML = Number(document.getElementById("station-dispo").innerHTML) + 1;
+
+            //Active les inputs
+            $( ":text" ).css("display", "block");
+            $("#thanksText").css("display", "none");
+
+            //Retire le texte de "Ma réservation"
+            document.getElementById("resaName").innerHTML = "";
+            document.getElementById("resaName").innerHTML = "Vous n'avez aucune réservation en cours";
+            document.getElementById("resaStation").innerHTML = "";
+            document.getElementById("resaTimerText").innerHTML = "";
 
 
-                    //Supprimer de la réservation du sessionStorage
-                    sessionStorage.clear();
-//                      currentStation.available_bikes++; //pas sur que ça marche car peut etre pas la bonne station, peut etre mettre un last station ? 
-                });         
-        })
+            //Supprimer de la réservation du sessionStorage
+            sessionStorage.clear();
+        }); 
     }
+    
+    // Methode pour faire disparaitre "merci pour votre réservation" après 3 secondes
+    hideThanks(){
+        $("#thanksText").css("display", "none");
+    }
+    
 }

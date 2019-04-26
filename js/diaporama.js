@@ -33,7 +33,6 @@ class Diaporama {
     
     // ---- Fonctions slide, forwardslide et reverseSlide ----
         
-    
     forwardSlide(){
         this.imgNumber++;
         if (this.imgNumber > (this.imagesSlider.length - 1) ){
@@ -76,7 +75,7 @@ class Diaporama {
         }
     }
 
-
+    
     // Fonctions pour mettre en pause et changer d'image
 
     nextPress(){

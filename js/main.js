@@ -58,6 +58,8 @@ let biclooMap = new Map("biclooMap",[47.2172500, -1.5533600],"https://{s}.basema
 
 let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooMap);
 
+
+
 // ------------------------------------- //
 // ------------ Reservation ------------ //
 // ------------------------------------- //
@@ -66,6 +68,20 @@ let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "N
 // Instanciation de l'objet Reservation
 
 let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooStations)
+
+
+
+
+// ------------------------------------- //
+// --------------- Timer --------------- //
+// ------------------------------------- //
+
+
+// Instanciation de l'objet Timer
+
+let timer = new Timer("resaTimer", 1200); 
+
+
 
 
 // ------------------------------------- //
@@ -80,9 +96,8 @@ $("#first_name" ).keyup( function() {
 
 if (localStorage.getItem("LSfirstName")){
      document.getElementById("first_name").value = localStorage.getItem("LSfirstName"); 
-    //pour $("#first_name" ).val() ne marche pas a la place de document.getElementById("first_name").value
+    //pourquoi $("#first_name" ).val() ne marche pas a la place de document.getElementById("first_name").value
 }
-
 
 
 $("#last_name" ).keyup( function() {
@@ -92,74 +107,43 @@ $("#last_name" ).keyup( function() {
 
 if (localStorage.getItem("LSlastName") ){
      document.getElementById("last_name").value = localStorage.getItem("LSlastName"); 
-    //pour $("#first_name" ).val() ne marche pas a la place de document.getElementById("first_name").value
+    //pourquoi $("#first_name" ).val() ne marche pas a la place de document.getElementById("first_name").value
 }
 
 
+//Si on a déja une réservation en cours dans sessionStorage
+    if (sessionStorage.getItem("SSstationName") && 
+        sessionStorage.getItem("SSavailableBike") &&
+        localStorage.getItem("LSfirstName") &&
+        localStorage.getItem("LSlastName") &&
+        sessionStorage.getItem("SStimer")){  
 
-// ------------------------------------- //
-// --------- timer -------- //
-// ------------------------------------- //
+        
+        
+        //le timer continue à décompter a partir de sa dernier valeur
+        timer.counter = sessionStorage.getItem("SStimer"); // le timer prends la dernière valeur enregistré dans le SS
+        document.getElementById("resaTimer").innerHTML =  timer.remainingTime // on affiche cette valeur comme valeur intial pour relancer le décompte
+        timer.startTimer(); // on relance le décompte
+        
 
-////var timeInMinutes = 1;
-////var currentTime = Date.parse(new Date());
-//////var deadline = new Date(currentTime + timeInMinutes*60*1000);
-//
-//// if there's a cookie with the name myClock, use that value as the deadline
-//if(sessionStorage.getItem("clock")){
-//  // get deadline value from cookie
-//  var deadline = sessionStorage.getItem("clock");
-//}
-//
-//// otherwise, set a deadline 10 minutes from now and 
-//// save it in a cookie with that name
-//else{
-//  // create deadline 10 minutes from now
-//  var timeInMinutes = 1;
-//  var currentTime = Date.parse(new Date());
-//  var deadline = new Date(currentTime + timeInMinutes*60*1000);
-//
-//  // store deadline in cookie for future reference
-//  sessionStorage.setItem("clock", deadline);
-//}
-//
-//
-//
-//function getTimeRemaining(endtime){
-//  var t = Date.parse(endtime) - Date.parse(new Date());
-//  var seconds = Math.floor( (t/1000) % 60 );
-//  var minutes = Math.floor( (t/1000/60) % 60 );
-//  return {
-//    'total': t,
-//    'minutes': minutes,
-//    'seconds': seconds
-//  };
-//}
-//
-//
-//function initializeClock(id, endtime){
-//  var clock = document.getElementById(id);
-//  var timeinterval = setInterval(function(){
-//    var t = getTimeRemaining(endtime);
-//    clock.innerHTML = ('0' + t.minutes).slice(-2) +  ':' + ('0' + t.seconds).slice(-2)
-//    if(t.total<=0){
-//      clearInterval(timeinterval);
-//      document.getElementById("resaTimer").innerHTML = "";
-//      document.getElementById("resaTimerText").innerHTML = "Votre réservation a expiré.";   
-//    }
-//  },1000);
-//}
-//
-//
-//
-////Actions quand on clique sur le bouton Réserver    
-//                document.getElementById("reservationBtn").addEventListener("click", function(){
-//                    initializeClock('resaTimer', deadline);}
-//                                                                           
-//                                                                           )
-////Actions quand on clique sur le bouton Annuler
-//                    $(".cancelBtn").on( "click", function(){
-//                        
-//}
-//                                                                           
-//                                                                           )
+        
+        //Ajout des infos de sessionStorage dans la section "Ma réservation"
+        document.getElementById("resaName").innerHTML = "";
+        document.getElementById("resaName").innerHTML = "Bonjour " + localStorage.getItem("LSfirstName").toUpperCase().bold() + " " + localStorage.getItem("LSlastName").toUpperCase().bold() //rajouter.bold() a checker  sur autre navigateurs
+        document.getElementById("resaStation").innerHTML = "";
+        document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + sessionStorage.getItem("SSstationName").bold();
+        document.getElementById("resaTimerText").innerHTML = "";
+        document.getElementById("resaTimerText").innerHTML = "Votre réservation expirera dans&nbsp;"; //rajouter.bold() a checker  sur autre navigateurs
+        $(".footerBtn").css("display", "block");       
+    }
+
+
+
+
+
+
+
+
+
+
+
