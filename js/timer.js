@@ -12,11 +12,12 @@ class Timer{
         this.minutes = [];
         this.secondes = [];
         this.remainingTime = []; // voir plus bas pour explication
+        sessionStorage.setItem("SSinitialTimer", this.counter);
     }
     
 
     startTimer(){
-        sessionStorage.setItem("SSinitialTimer", this.counter); // on récupère la valeur du counter initial défini en paramètre lors de d'instanciation de l'objet dans mains.js --- voir suite dans stopTimer()
+        ; // on récupère la valeur du counter initial défini en paramètre lors de d'instanciation de l'objet dans mains.js --- voir suite dans stopTimer()
         this.timeInterval = setInterval(this.runTimer.bind(this), 1000);
     }
      
@@ -63,10 +64,15 @@ class Timer{
             document.getElementById("resaTimerText").innerHTML = "";
 
 
-            //Supprimer de la réservation du sessionStorage
-            sessionStorage.clear();
+            //Supprimer de la réservation du sessionStorage !! // on utilise pas un sessionStorage.clear() car sinon SSinitialTimer est supprimée également et cela cause un bug dans stopTimer() puisque this.counter = sessionStorage.getItem("SSinitialTimer") ne vaut pas 1200 mais 0/null/[]
+//          sessionStorage.clear();
+            sessionStorage.removeItem("SSstationName");
+            sessionStorage.removeItem("SSavailableBike");
+            sessionStorage.removeItem("SSavailableBike")
             
             //***
+            
+//            this.counter = sessionStorage.getItem("SSinitialTimer"); //réinitialise le counter a 1200 pour le prochain départ. Inutile a priori. Pourquoi ? Car quand on relance une résa this.counter = counter ( avec counter param de l'objet timer = 1200) ? 
             
             
             document.getElementById("resaTimer").innerHTML = "";

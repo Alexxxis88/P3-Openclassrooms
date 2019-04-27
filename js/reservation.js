@@ -27,8 +27,8 @@ class Reservation {
                  timer.startTimer();
             }
                 
-           
-           
+           //On annule la disparition retardé de "votre réservation a expiré" car sinon cela fera disparaitre le texte "Votre réservation expirera dans " et laissera juste le timer si on clique sur réserver à nouveau avant que "votre résa a expiré" ait disparru (3secs)
+           clearTimeout(timer.delayedExpired);
             
             
             
@@ -124,8 +124,11 @@ class Reservation {
             document.getElementById("resaTimerText").innerHTML = "";
 
 
-            //Supprimer de la réservation du sessionStorage
-            sessionStorage.clear();
+            //Supprimer de la réservation du sessionStorage !! // on utilise pas un sessionStorage.clear() car sinon SSinitialTimer est supprimée également et cela cause un bug dans stopTimer() puisque this.counter = sessionStorage.getItem("SSinitialTimer") ne vaut pas 1200 mais 0/null/[]
+//          sessionStorage.clear();
+            sessionStorage.removeItem("SSstationName");
+            sessionStorage.removeItem("SSavailableBike");
+            sessionStorage.removeItem("SSavailableBike")
         }); 
     }
     

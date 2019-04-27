@@ -79,7 +79,7 @@ let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "N
 
 // Instanciation de l'objet Timer
 
-let timer = new Timer("resaTimer", 1200); 
+let timer = new Timer("resaTimer", 5); 
 
 
 
