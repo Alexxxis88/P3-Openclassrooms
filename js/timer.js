@@ -16,7 +16,8 @@ class Timer{
     
 
     startTimer(){
-    this.timeInterval = setInterval(this.runTimer.bind(this), 1000);
+        sessionStorage.setItem("SSinitialTimer", this.counter); // on récupère la valeur du counter initial défini en paramètre lors de d'instanciation de l'objet dans mains.js --- voir suite dans stopTimer()
+        this.timeInterval = setInterval(this.runTimer.bind(this), 1000);
     }
      
     runTimer(){  
@@ -79,7 +80,7 @@ class Timer{
     stopTimer(){
         clearInterval(this.timeInterval);
         this.flag = "stopped"
-        this.counter = 1200; // fonctionne mais perd se son coté réutilisable en objet car si je veux un autre timer c'est hard codé ici. Trouver une autre solution
+        this.counter = sessionStorage.getItem("SSinitialTimer"); // on récupère la valeur du counter initial défini a l'instanciation de l'objet et on le réinjecte ici pour relancer le compteur a 1200 secondes. Fonctionne en métant directement this.counter = 1200 mais perd son coté réutilisable en objet car si je veux un autre timer c'est hard codé ici. 
         document.getElementById("resaTimer").innerHTML = "";
         document.getElementById("resaTimerText").innerHTML = "";
     }
