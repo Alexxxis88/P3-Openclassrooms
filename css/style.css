@@ -228,7 +228,8 @@ li{
 
 #infoStation{
     margin:50px auto;
-    height:600px;
+    padding-bottom: 10px;
+    min-height: 600px;
     background: white;
     -webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.7);
             box-shadow: 0 2px 5px rgba(0,0,0,0.7);
@@ -313,6 +314,14 @@ input{
     font-weight: bold;
     text-align: center;
     margin-top: 25px;
+}
+
+
+#canvas{
+    margin:auto;
+    display: block;
+    border:1px black solid;
+    border-radius: 3px;
 }
 
 /* ----- Ma réservation ----- */

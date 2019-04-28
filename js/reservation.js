@@ -71,9 +71,10 @@ class Reservation {
                     document.getElementById("station-dispo").innerHTML = "";
                     document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
 
-                    //Désactive les inputs & active remerciements
+                    //Désactive les inputs, active remerciements et canvas
                     $(":text" ).css("display", "none");
                     $("#thanksText").css("display", "block");
+//                    $("canvas").css("display", "block");
                     
                     // Fait disparaitre "merci pour votre réservation" après 3 secondes
                     this.delayedThanks = setTimeout(this.hideThanks.bind(this), 3000);
@@ -113,9 +114,10 @@ class Reservation {
             //vu que l'on est plus dans l'ajaxGet on ne peut plus utiliser currentStation.available_bikes pour mettre à jour la valeur donc on récupère la valeur html du champ "velo disponible", on le converti en nombre et on lui ajoute 1
             document.getElementById("station-dispo").innerHTML = Number(document.getElementById("station-dispo").innerHTML) + 1;
 
-            //Active les inputs
+            //Active les inputs, désactive texte remerciement et canvas
             $( ":text" ).css("display", "block");
             $("#thanksText").css("display", "none");
+//          $("canvas").css("display", "none");
 
             //Retire le texte de "Ma réservation"
             document.getElementById("resaName").innerHTML = "";

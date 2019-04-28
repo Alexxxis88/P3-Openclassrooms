@@ -80,6 +80,7 @@ class Stations {
                         document.getElementById("reservationBtn").style.display = "none" ;
                         $(".infoResaBtn").css("display", "none"); ;
                         $("#thanksText").css("display", "none");
+//                        $("canvas").css("display", "none");
                     }
                     
                     //si le nombre de vélo dispo est égal a zéro OU si le nom de la station associé au marker sur lequel je clic = celui de la réservation en cours ET que le nombre de vélo dans sessionStorage = 0, alors on désactive le bouton de réservation etc
@@ -89,13 +90,15 @@ class Stations {
                         document.getElementById("reservationBtn").style.display = "none" ;
                         $(".infoResaBtn").css("display", "none");
                         $("#thanksText").css("display", "none");
+//                        $("canvas").css("display", "none");
                     }
                     else if(station.available_bikes < station.bike_stands / 2){
                         $(".infoColor").css("background-color", "orange");
                         document.getElementById("reservationBtn").style.display = "block" ;
                         $(".infoResaBtn").css("display", "none");
                         $("#thanksText").css("display", "none");
-                        $( ":text" ).css("display", "block");   
+                        $( ":text" ).css("display", "block");
+//                        $("canvas").css("display", "none");
                     }
                     else{
                          $(".infoColor").css("background-color", "green");
@@ -103,6 +106,8 @@ class Stations {
                         $(".infoResaBtn").css("display", "none");
                         $("#thanksText").css("display", "none");
                         $( ":text" ).css("display", "block");
+//                        $("canvas").css("display", "none");
+
                     }
                     
                     document.getElementById("reservationBtn").disabled = false;
