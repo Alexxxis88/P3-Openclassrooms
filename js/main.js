@@ -3,7 +3,7 @@
 // ------------- Header ---------------- //
 // ------------------------------------- //
 
-//scroll fluide
+//Scroll fluide
 
 $(document).ready(function() {
 		$(".js-scrollTo").on("click", function() { // Au clic sur un élément
@@ -37,7 +37,15 @@ let Slider = new Diaporama("imagesCarousel",[
         "img/pic3.jpg",
         "img/pic4.jpg",
         "img/pic5.jpg"
-        ]);
+        ],
+        [
+        "Bicloo - Réservez votre vélo à Nantes !",
+        "Naviguez sur la carte et choisissez une station",
+        "Vérifiez le nombre de vélos disponibles",
+        "Réservez, signez...",
+        "Roulez !"
+        ]
+                          );
 
 
 // ------------------------------------- //
@@ -70,6 +78,16 @@ let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "N
 let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooStations)
 
 
+
+// ------------------------------------- //
+// --------------- Canvas --------------- //
+// ------------------------------------- //
+
+
+// Instanciation de l'objet Canvas
+
+let myCanvas = new Canvas(); 
+myCanvas.init();
 
 
 // ------------------------------------- //
@@ -112,38 +130,51 @@ if (localStorage.getItem("LSlastName") ){
 
 
 //Si on a déja une réservation en cours dans sessionStorage
-    if (sessionStorage.getItem("SSstationName") && 
-        sessionStorage.getItem("SSavailableBike") &&
-        localStorage.getItem("LSfirstName") &&
-        localStorage.getItem("LSlastName") &&
-        sessionStorage.getItem("SStimer")){  
+if (sessionStorage.getItem("SSstationName") && 
+    sessionStorage.getItem("SSavailableBike") &&
+    localStorage.getItem("LSfirstName") &&
+    localStorage.getItem("LSlastName") &&
+    sessionStorage.getItem("SStimer")){  
 
-        
-        
-        //le timer continue à décompter a partir de sa dernier valeur
-        timer.counter = sessionStorage.getItem("SStimer"); // le timer prends la dernière valeur enregistré dans le SS
-        document.getElementById("resaTimer").innerHTML =  timer.remainingTime // on affiche cette valeur comme valeur intial pour relancer le décompte
-        timer.startTimer(); // on relance le décompte
-        
+    
+    //le timer continue à décompter a partir de sa dernier valeur
+    timer.counter = sessionStorage.getItem("SStimer"); // le timer prends la dernière valeur enregistré dans le SS
+    document.getElementById("resaTimer").innerHTML =  timer.remainingTime // on affiche cette valeur comme valeur intial pour relancer le décompte
+    timer.startTimer(); // on relance le décompte
 
-        
-        //Ajout des infos de sessionStorage dans la section "Ma réservation"
-        document.getElementById("resaName").innerHTML = "";
-        document.getElementById("resaName").innerHTML = "Bonjour " + localStorage.getItem("LSfirstName").toUpperCase().bold() + " " + localStorage.getItem("LSlastName").toUpperCase().bold() //rajouter.bold() a checker  sur autre navigateurs
-        document.getElementById("resaStation").innerHTML = "";
-        document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + sessionStorage.getItem("SSstationName").bold();
-        document.getElementById("resaTimerText").innerHTML = "";
-        document.getElementById("resaTimerText").innerHTML = "Votre réservation expirera dans&nbsp;"; //rajouter.bold() a checker  sur autre navigateurs
-        $(".footerBtn").css("display", "block");       
-    }
+    
+    //Ajout des infos de sessionStorage dans la section "Ma réservation"
+    document.getElementById("resaName").innerHTML = "";
+    document.getElementById("resaName").innerHTML = "Bonjour " + localStorage.getItem("LSfirstName").toUpperCase().bold() + " " + localStorage.getItem("LSlastName").toUpperCase().bold() //rajouter.bold() a checker  sur autre navigateurs
+    document.getElementById("resaStation").innerHTML = "";
+    document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + sessionStorage.getItem("SSstationName").bold();
+    document.getElementById("resaTimerText").innerHTML = "";
+    document.getElementById("resaTimerText").innerHTML = "Votre réservation expirera dans&nbsp;"; //rajouter.bold() a checker  sur autre navigateurs
+    $(".footerBtn").css("display", "block");       
+}
 
 
 
 
+// ------------------------------------- //
+// ----- Modal Box Mentios Légales ----- //
+// ------------------------------------- //
 
+//pas de Jquerry car WINDOW n'est pas selectionnable en Jquery
+const modal = document.getElementById("myModal");
+const btn = document.getElementById("legalNotice");
+const span = document.getElementsByClassName("close")[0];
 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
 
+span.onclick = function() {
+  modal.style.display = "none";
+}
 
-
-
-
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}

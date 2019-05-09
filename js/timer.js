@@ -48,7 +48,8 @@ class Timer{
             
             ///***
             $(".cancelBtn").css("display", "none");
-            document.getElementById("reservationBtn").disabled = false;
+            $("#canvas").css("display", "none");
+            document.getElementById("reservationBtn").disabled = false; //inutile ? 
 
             //vu que l'on est plus dans l'ajaxGet on ne peut plus utiliser currentStation.available_bikes pour mettre à jour la valeur donc on récupère la valeur html du champ "velo disponible", on le converti en nombre et on lui ajoute 1
             document.getElementById("station-dispo").innerHTML = Number(document.getElementById("station-dispo").innerHTML) + 1;

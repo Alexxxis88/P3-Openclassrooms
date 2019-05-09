@@ -3,11 +3,13 @@
 // ------------------------------------- //
 
 class Diaporama {   
-    constructor(id, imagesSlider){
+    constructor(id, imagesSlider, textsSlider){
         this.idSlide = id;
         this.imagesSlider = imagesSlider;
+        this.textsSlider = textsSlider;
         this.imgNumber = 0;
         this.currentSlide = this.imagesSlider[this.imgNumber];
+        this.currentText = this.textsSlider[this.imgNumber];
         this.intervalTime = setInterval(this.forwardSlide.bind(this), 5000);
         this.playing = true;
         
@@ -22,6 +24,14 @@ class Diaporama {
         document.getElementById(this.idSlide).appendChild(this.newImage);
         
         
+        // Création de l'élément <p> qui va accueillir le texte
+        this.newText = document.createElement("p")
+        this.newText.id = "js-newText";
+        this.newText.src = this.currentText;
+        document.getElementById(this.idSlide).appendChild(this.newText);
+        document.getElementById(this.newText.id).innerHTML = this.currentText;
+
+        
         // Event listeners sur les boutons et clavier
         document.addEventListener("keydown",  this.keyboard.bind(this));
         this.nextBtn.addEventListener("click", this.nextPress.bind(this));
@@ -31,7 +41,7 @@ class Diaporama {
     }
 
     
-    // ---- Fonctions slide, forwardslide et reverseSlide ----
+    // ---- Methodes slide, forwardslide et reverseSlide ----
         
     forwardSlide(){
         this.imgNumber++;
@@ -39,7 +49,10 @@ class Diaporama {
             this.imgNumber = 0;
         }
         this.currentSlide = this.imagesSlider[this.imgNumber];
-        this.newImage.src = this.currentSlide;
+        this.newImage.src = this.currentSlide;        
+        this.currentText = this.textsSlider[this.imgNumber];
+        document.getElementById(this.newText.id).innerHTML = this.currentText;
+        
     }
 
     reverseSlide(){
@@ -49,10 +62,12 @@ class Diaporama {
         }
         this.currentSlide = this.imagesSlider[this.imgNumber];
         this.newImage.src = this.currentSlide; 
+        this.currentText = this.textsSlider[this.imgNumber];
+        document.getElementById(this.newText.id).innerHTML = this.currentText;
     }
 
 
-    // ---- Fonctions pause, play et play-pause ----
+    // ---- Methodes pause, play et play-pause ----
 
     pause(){
         this.pauseBtn.innerHTML = "&#9658;"; // Code du logo play
@@ -76,7 +91,7 @@ class Diaporama {
     }
 
     
-    // Fonctions pour mettre en pause et changer d'image
+    // Methodes pour mettre en pause et changer d'image
 
     nextPress(){
         this.pause();

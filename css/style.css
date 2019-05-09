@@ -2,8 +2,7 @@ body{
     margin: 0;
     padding: 0;
     font-family: Arial;
-    background: #f6f6f6;
-    
+    background: #f6f6f6;  
 }
 
 h2{
@@ -16,7 +15,7 @@ h2{
 
 /* ----- Header ----- */
 #sectionHeader{
-    padding-bottom: 100px;
+    padding-bottom: 80px;
     
 }
 header{
@@ -30,7 +29,7 @@ header{
             justify-content: space-between;
     width:100%;
     height:80px;
-    background: #1a9ae5;  
+    background: rgba(0,0,0,0.9);  
 }
 
 #logoBicloo{
@@ -57,18 +56,13 @@ li{
     font-size: 1.3vw;
     font-family: Arial;
     font-weight: bold;
-    background: rgba(26,154,229,0.8);
-    padding: 10px 10px 10px 10px;
-    border-radius: 3px;
     -webkit-transition: 0.2s ease-in-out;
     transition: 0.2s ease-in-out;
 }
 
 
 .navMenu  a:hover{
-    color: #1a9ae5; 
-    background: rgba(255,255,255,0.9)
-  
+    color: rgb(26,154,229);   
 }
 
 
@@ -84,29 +78,31 @@ li{
 }
 
 .bar1, .bar2, .bar3 {
-  width: 35px;
-  height: 5px;
-  background-color: white;
-  margin: 6px 0;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+    -webkit-transition: 0.4s;
+        transition: 0.4s;
 }
 
 /* Rotation de la première barre */
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
-  transform: rotate(-45deg) translate(-9px, 6px) ;
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+        transform: rotate(-45deg) translate(-9px, 6px) ;
+    background-color: rgb(26,154,229);
 }
 
 /* Estomper la deuxième barre */
 .change .bar2 {
-  opacity: 0;
+    opacity: 0;
 }
 
 /* Rotation de la troisieme barre */
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
-  transform: rotate(45deg) translate(-8px, -8px) ;
+    -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+        transform: rotate(45deg) translate(-8px, -8px) ;
+    background-color: rgb(26,154,229);
 }
 
 #burgerNav{
@@ -115,7 +111,7 @@ li{
     width: 100%;
     top:80px;
     z-index: 1001;
-    background: #1a9ae5;
+    background: rgba(0,0,0,0.9);
     -webkit-transition: 0.4s;
     transition: 0.4s;
     
@@ -141,8 +137,7 @@ li{
 
 .carousel-container{
     position:relative;
-    width: 80vw;
-    margin: 20px auto 0 auto;
+    width: 100%;
 }
 
 .carousel-slide{
@@ -152,12 +147,26 @@ li{
 }
 
 .carousel-slide img{
-    width: 80vw;
-    height: 400px;
+    width: 100%;
+    height: 100%;
 }
 
 .carousel-slide img:hover{
     cursor: pointer;
+}
+
+#js-newText{
+    position: absolute;
+    bottom:40%;
+    left:5%;
+    background: rgba(0,0,0,0.7);
+    padding:30px;
+    border-radius: 10px;
+    color: white;
+    font-size : 1.5vw;
+    font-weight: Bold;
+    text-align: center;
+    line-height: normal;
 }
 
 /* Boutons */
@@ -205,10 +214,10 @@ li{
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    margin : 50px 0 0 0 ;
+    margin : 10px 0 0 0 ;
     width : 100%;
     height:70px;
-    background: #1a9ae5;
+    background: rgba(0,0,0,0.9)
 }
 
 
@@ -226,6 +235,8 @@ li{
     border: 1px solid black;
 }
 
+/* ----- Panneau informations ----- */
+
 #infoStation{
     margin:50px auto;
     padding-bottom: 10px;
@@ -241,14 +252,14 @@ li{
     text-align: center;
 }
 
+
 .infoColor{
     color:white;
     padding: 7px;
     border-radius : 4px;
+
 }
 
-
-/* ----- Panneau informations ----- */
 
 input{
     width:100%;
@@ -263,9 +274,9 @@ input{
             justify-content: space-around;
 }
 
-#reservationBtn{
+#reservationBtn, #signBtn{
     display: none;
-    margin-top: 10px;
+    margin: 10px 0 20px 0;
     width:45%;
     color: white; 
     background: rgba(26,154,229,0.8);
@@ -279,15 +290,15 @@ input{
 }
 
 
-#reservationBtn:hover{
+#reservationBtn:hover, #signBtn:hover{
     color: #1a9ae5; 
     background: rgba(255,255,255,0.9)
   
 }
 
-.cancelBtn{
+.cancelBtn, #eraseBtn{
     display:none;
-    margin-top: 10px;
+    margin: 10px 0 20px 0;
     width:45%;
     color: white; 
     background: rgba(128,128,128,0.8);
@@ -300,7 +311,7 @@ input{
     transition: 0.2s ease-in-out;
 }
 
-.cancelBtn:hover{
+.cancelBtn:hover, #eraseBtn:hover{
     color: rgba(26,154,229,1);  
     background: rgba(0,0,0,0.7)
 }
@@ -319,9 +330,11 @@ input{
 
 #canvas{
     margin:auto;
-    display: block;
+    display: none;
     border:1px black solid;
     border-radius: 3px;
+    -ms-touch-action: none; /* ----- Empèche le scroll quand on signe sur touchpad ----- */
+        touch-action: none;
 }
 
 /* ----- Ma réservation ----- */
@@ -330,7 +343,7 @@ footer{
     width : 100%;
     height: auto;
     padding-bottom: 20px;
-    background: #1a9ae5;
+    background: rgba(0,0,0,0.9);
 }
 
 #footerTitle{
@@ -358,13 +371,85 @@ footer{
 
 #resaTimerText, #resaTimer{
     font-weight: bold;
-    font-size: 25px;
-    line-height: 50px;
+}
+
+#resaTimer{
+    color:rgb(26,154,229);
 }
 
 p{
     line-height: 15px;
 }
+
+
+
+/* Modal Box Mentions Légales */
+
+#legalNotice{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+   -webkit-box-pack: end;
+       -ms-flex-pack: end;
+           justify-content: flex-end;
+    margin-right: 30px;
+    font-size : 15px;
+    color: white;
+    -webkit-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+}
+
+#legalNotice:hover{
+    cursor: pointer;
+    color: rgb(26,154,229)
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1002;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid black;
+    width: 80%; 
+    
+}
+
+.modal-content p{
+    word-break: break-all;
+    line-height: 25px;
+    font-size: 15px;
+}
+
+.close {
+    color: black;
+    opacity : 1 !important;
+    position: absolute;
+    right: 15px;
+    top:5px;
+    font-size: 50px;
+    font-weight: bold;
+    -webkit-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+
+}
+
+.close:hover,
+.close:focus {
+    color: rgb(26,154,229);
+    cursor: pointer;
+}
+
 
 /* Media Queries */
 
@@ -378,7 +463,11 @@ p{
  
     #burgerNav{
     display: none !important; /* il faut rajouter cela sinon le menu ne se referme pas lorsqu'on agrandi la fenêtre à nouveau */
-}
+    }
+    
+    #resaTimerText, #resaTimer{
+    font-size: 25px;
+    }
 }
 
 
@@ -394,10 +483,15 @@ p{
     }
     
     #separateur{
-        margin : 50px 0 50px 0 ;
+        margin : 10px 0 50px 0 ;
     }
     
-   
+    #infoStation{
+        height : auto;
+        min-height: 0px;
+    }
+    
+    
     
 }
     
@@ -412,14 +506,29 @@ p{
                 justify-content: center;
     }
     
+    #js-newText{
+        left:25%;
+        bottom:30%;
+        width:50%;
+        font-size : 3vw;
+        padding:15px;
+    }
+    
     #biclooMap,#infoStation{
         margin-right: 30px ;
         margin-left : 30px ;
     }
+      
     .footerBtn{
     width: 95%;
     max-width: 95%;
     }
+    
+    .modal-content {
+        padding-top: 60px;
+    }
+    
+    
 }
 
 
