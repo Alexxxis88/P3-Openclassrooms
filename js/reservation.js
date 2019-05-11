@@ -32,10 +32,8 @@ class Reservation {
 
             //If names are correct
             else{
-                $("#canvas").css("display", "block");
+                $("#canvas, #signBtn, #eraseBtn ").css("display", "block");
                 $("#reservationBtn").css("display", "none");
-                $("#signBtn").css("display", "block");
-                $("#eraseBtn").css("display", "block");
             }
          }.bind(this));    
         
@@ -76,18 +74,13 @@ class Reservation {
                               "\nCette nouvelle réservation annule l'ancienne.")
                     }
 
-                    $(".cancelBtn").css("display", "block");
                     currentStation.available_bikes--;
                     document.getElementById("station-dispo").innerHTML = "";
                     document.getElementById("station-dispo").innerHTML += currentStation.available_bikes;
 
                     //Hide inputs, labels, thanks, canvas, sign / clear buttons
-                    $("label" ).css("display", "none");
-                    $(":text" ).css("display", "none");
-                    $("#thanksText").css("display", "block");
-                    $("#canvas").css("display", "none");
-                    $("#signBtn").css("display", "none");
-                    $("#eraseBtn").css("display", "none");
+                    $("label, :text, #thanksText, #canvas, #signBtn, #eraseBtn " ).css("display", "none");
+                    $("#thanksText, .cancelBtn").css("display", "block");
 
 
                     // Hide "merci pour votre réservation" after 3 seconds
@@ -118,17 +111,14 @@ class Reservation {
         //Cancel Button Eventlistener
         $(".cancelBtn").on( "click", function(){
             myCanvas.clear();
-            $("#canvas").css("display", "none");
+            $("#canvas, #eraseBtn, .cancelBtn, #signBtn").css("display", "none");
             timer.stopTimer();
-            $("#signBtn").css("display", "none");
-            $(".cancelBtn").css("display", "none");
 
             //Hack to display correct expected available bikes number since we are not sending the reservation to the server
             document.getElementById("station-dispo").innerHTML = Number(document.getElementById("station-dispo").innerHTML) + 1;
 
             //Display inputs and text, hide thanks
-            $("label" ).css("display", "block");
-            $( ":text" ).css("display", "block");
+            $("label, :text " ).css("display", "block");
             $("#thanksText").css("display", "none");
 
             //Clear "Ma réservation" information

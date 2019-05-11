@@ -64,46 +64,29 @@ class Stations {
                         $(".infoColor").css("background-color", "red");
                         document.getElementById("station-status").innerHTML = "";
                         document.getElementById("station-status").innerHTML += "Fermée";
-                        $("#reservationBtn").css("display", "none");
-                        $(".infoResaBtn").css("display", "none");
-                        $("#thanksText").css("display", "none");
+                        $("#reservationBtn, .infoResaBtn, #thanksText,#canvas ").css("display", "none");
                         myCanvas.clear();
-                        $("#canvas").css("display", "none");
+                       
                     }
                     
                     //Hide Reservation button and whatnot if no bikes left or if already a reserved bike on the station we clicked on AND no bike left
                     else if(station.name.split("-")[1] == sessionStorage.getItem("SSstationName") && 
                        sessionStorage.getItem("SSavailableBike") == 0 || station.available_bikes === 0 ){
                         $(".infoColor").css("background-color", "orange");
-                        $("#reservationBtn").css("display", "none");
-                        $("#signBtn").css("display", "none");
-                        $("#eraseBtn").css("display", "none");
-                        $(".infoResaBtn").css("display", "none");
-                        $("#thanksText").css("display", "none");
+                        $("#reservationBtn, #signBtn, #eraseBtn, .infoResaBtn, #thanksText, #canvas ").css("display", "none");
                         myCanvas.clear();
-                        $("#canvas").css("display", "none");
                     }
                     else if(station.available_bikes < station.bike_stands / 2){
                         $(".infoColor").css("background-color", "orange");
-                        $("#reservationBtn").css("display", "block");
-                        $("#signBtn").css("display", "none");
-                        $("#eraseBtn").css("display", "none");
-                        $(".infoResaBtn").css("display", "none");
-                        $("#thanksText").css("display", "none");
-                        $( ":text" ).css("display", "block");
+                        $("#reservationBtn, :text").css("display", "block");
+                        $("#signBtn, #eraseBtn, #canvas, .infoResaBtn, #thanksText ").css("display", "none");
                         myCanvas.clear();
-                        $("#canvas").css("display", "none");
                     }
                     else{
                         $(".infoColor").css("background-color", "green");
-                        $("#reservationBtn").css("display", "block");
-                        $("#signBtn").css("display", "none");
-                        $("#eraseBtn").css("display", "none");
-                        $(".infoResaBtn").css("display", "none");
-                        $("#thanksText").css("display", "none");
-                        $( ":text" ).css("display", "block");
+                        $("#reservationBtn, :text").css("display", "block");
+                        $("#signBtn, #eraseBtn, .infoResaBtn, #thanksText, #canvas").css("display", "none");
                         myCanvas.clear();
-                        $("#canvas").css("display", "none");
                     }
                     
                     document.getElementById("station-status").innerHTML = "";

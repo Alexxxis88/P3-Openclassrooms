@@ -21,7 +21,7 @@ class Timer{
     }
      
     runTimer(){  
-        if (this.counter >= 0) {
+        if (this.counter > 0) {
             this.flag = "running"
             this.counter--;
             this.minutes = Math.floor(this.counter / 60);
@@ -43,10 +43,8 @@ class Timer{
         
         if (this.counter === 0) {
             clearInterval(this.timeInterval);
-            $(".cancelBtn").css("display", "none");
-            $("#canvas").css("display", "none");
+            $(".cancelBtn, #canvas").css("display", "none");
 
-            //vu que l'on est plus dans l'ajaxGet on ne peut plus utiliser currentStation.available_bikes pour mettre à jour la valeur donc on récupère la valeur html du champ "velo disponible", on le converti en nombre et on lui ajoute 1
             //Hack to display correct expected available bikes number since we are not sending the reservation to the server
             document.getElementById("station-dispo").innerHTML = Number(document.getElementById("station-dispo").innerHTML) + 1;
 
@@ -78,7 +76,7 @@ class Timer{
     
     stopTimer(){
         clearInterval(this.timeInterval);
-        this.flag = "stopped"
+        this.flag = "stopped";
         this.counter = sessionStorage.getItem("SSinitialTimer"); //Reset timer with intial counter (1200s)
         document.getElementById("resaTimer").innerHTML = "";
         document.getElementById("resaTimerText").innerHTML = "";
