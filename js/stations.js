@@ -34,17 +34,14 @@ class Stations {
                 
                 //Display marker color depending on station status
                 if(station.status === "CLOSED"){
-                    this.markerColor = "red";
                     this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.redIcon });
                     this.markersCluster.addLayer(this.marker)
                 }
                 else if(station.available_bikes < station.bike_stands / 2){
-                    this.markerColor = "orange";
                     this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.orangeIcon});
                     this.markersCluster.addLayer(this.marker)                   
                 }
                 else { // plus de la moitié des vélos disponibles
-                    this.markerColor = "green";
                     this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.greenIcon}); 
                     this.markersCluster.addLayer(this.marker)
                 } 
