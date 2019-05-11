@@ -1,3 +1,5 @@
+/* ----- General ----- */
+
 body{
     margin: 0;
     padding: 0;
@@ -8,16 +10,17 @@ body{
 h2{
     font-weight: bold;
     font-size: 30px;
-    color : white;
-    
+    color : white;  
 }
+
 
 
 /* ----- Header ----- */
+
 #sectionHeader{
-    padding-bottom: 80px;
-    
+    padding-bottom: 80px;   
 }
+
 header{
     position: fixed;
     z-index: 1001;
@@ -49,7 +52,6 @@ li{
     margin: 15px 10px 0 10px;
 }
 
-
 .navMenu a{
     text-decoration: none;
     color: white; 
@@ -66,8 +68,7 @@ li{
 }
 
 
-/* Menu Hamburger */
-
+/* Burger Menu */
 #burgerMenu{
     display: none;
     position: fixed;
@@ -86,19 +87,19 @@ li{
         transition: 0.4s;
 }
 
-/* Rotation de la première barre */
+/* Rotate the first bar */
 .change .bar1 {
     -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
         transform: rotate(-45deg) translate(-9px, 6px) ;
     background-color: rgb(26,154,229);
 }
 
-/* Estomper la deuxième barre */
+/* Fade out the second bar */
 .change .bar2 {
     opacity: 0;
 }
 
-/* Rotation de la troisieme barre */
+/* Rotate the third bar */
 .change .bar3 {
     -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
         transform: rotate(45deg) translate(-8px, -8px) ;
@@ -113,8 +114,7 @@ li{
     z-index: 1001;
     background: rgba(0,0,0,0.9);
     -webkit-transition: 0.4s;
-    transition: 0.4s;
-    
+    transition: 0.4s;   
 }
 
 #burgerNav ul{
@@ -133,7 +133,7 @@ li{
 
 
 
-/* ----- Carrousel ----- */
+/* ----- Slider ----- */
 
 .carousel-container{
     position:relative;
@@ -169,8 +169,8 @@ li{
     line-height: normal;
 }
 
-/* Boutons */
 
+/* Buttons */
 #slideNav{
     display: -webkit-box; display: -ms-flexbox; display: flex;
     -webkit-box-pack: center;
@@ -202,12 +202,9 @@ li{
 
 
 
+/* ----- Map ----- */
 
-/* ----- Carte ----- */
-
-
-
-#separateur{
+#separator{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -219,7 +216,6 @@ li{
     height:70px;
     background: rgba(0,0,0,0.9)
 }
-
 
 .fa{
     font-size: 25px;
@@ -235,7 +231,9 @@ li{
     border: 1px solid black;
 }
 
-/* ----- Panneau informations ----- */
+
+
+/* ----- Information Pannel ----- */
 
 #infoStation{
     margin:50px auto;
@@ -252,14 +250,11 @@ li{
     text-align: center;
 }
 
-
 .infoColor{
     color:white;
     padding: 7px;
     border-radius : 4px;
-
 }
-
 
 input{
     width:100%;
@@ -289,11 +284,9 @@ input{
     transition: 0.2s ease-in-out;
 }
 
-
 #reservationBtn:hover, #signBtn:hover{
     color: #1a9ae5; 
-    background: rgba(255,255,255,0.9)
-  
+    background: rgba(255,255,255,0.9) 
 }
 
 .cancelBtn, #eraseBtn{
@@ -327,17 +320,18 @@ input{
     margin-top: 25px;
 }
 
-
 #canvas{
     margin:auto;
     display: none;
     border:1px black solid;
     border-radius: 3px;
-    -ms-touch-action: none; /* ----- Empèche le scroll quand on signe sur touchpad ----- */
+    -ms-touch-action: none; /* Provide scrolling when using touchpad */
         touch-action: none;
 }
 
-/* ----- Ma réservation ----- */
+
+
+/* ----- My Reservation ----- */
 
 footer{
     width : 100%;
@@ -355,7 +349,6 @@ footer{
             align-items: center;
     margin-bottom: 20px;
 }
-
 
 #resaInfo{
     color: white;
@@ -382,8 +375,7 @@ p{
 }
 
 
-
-/* Modal Box Mentions Légales */
+/* Modal Box Legal Notice */
 
 #legalNotice{
     display: -webkit-box;
@@ -421,8 +413,7 @@ p{
     margin: 10% auto;
     padding: 20px;
     border: 1px solid black;
-    width: 80%; 
-    
+    width: 80%;  
 }
 
 .modal-content p{
@@ -441,7 +432,6 @@ p{
     font-weight: bold;
     -webkit-transition: 0.2s ease-in-out;
     transition: 0.2s ease-in-out;
-
 }
 
 .close:hover,
@@ -451,18 +441,19 @@ p{
 }
 
 
-/* Media Queries */
+
+/* ----- Media Queries ----- */
 
 
-/* Très grands écrans */
+/* Very big screens */
 @media all and (min-width:1280px){
 }
 
-/* Ordinateurs de bureau */
+/* Desktop computers */
 @media all and (min-width:992px){
  
     #burgerNav{
-    display: none !important; /* il faut rajouter cela sinon le menu ne se referme pas lorsqu'on agrandi la fenêtre à nouveau */
+    display: none !important; /* needed to close the menu when resizing the window */
     }
     
     #resaTimerText, #resaTimer{
@@ -471,7 +462,7 @@ p{
 }
 
 
-/* Tablettes */
+/* Tablets */
 @media all and (max-width:991px){
        
     #menuDesktop{
@@ -482,24 +473,20 @@ p{
         display: initial;
     }
     
-    #separateur{
+    #separator{
         margin : 10px 0 50px 0 ;
     }
     
     #infoStation{
         height : auto;
         min-height: 0px;
-    }
-    
-    
-    
+    }  
 }
     
 
 /* Mobiles */
 @media all and (max-width:768px){
 	
-    
     #burgerNav ul{
         -webkit-box-pack: center;
             -ms-flex-pack: center;
@@ -526,9 +513,7 @@ p{
     
     .modal-content {
         padding-top: 60px;
-    }
-    
-    
+    }  
 }
 
 

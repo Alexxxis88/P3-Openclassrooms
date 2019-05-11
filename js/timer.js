@@ -8,16 +8,15 @@ class Timer{
         this.counter = counter;
         this.timeInterval = [];
         this.flag = [];
-        this.delayedExpired = []; //pour faire disparaitre "Votre réservation a expiré" après 3 secondes        
+        this.delayedExpired = [];      
         this.minutes = [];
         this.secondes = [];
-        this.remainingTime = []; // voir plus bas pour explication
+        this.remainingTime = [];
         sessionStorage.setItem("SSinitialTimer", this.counter);
     }
     
-
+    //METHODS
     startTimer(){
-        ; // on récupère la valeur du counter initial défini en paramètre lors de d'instanciation de l'objet dans mains.js --- voir suite dans stopTimer()
         this.timeInterval = setInterval(this.runTimer.bind(this), 1000);
     }
      
@@ -36,50 +35,43 @@ class Timer{
                this.minutes = "0" + this.minutes
             }
             
-            this.remainingTime = this.minutes + ":" + this.secondes; // voir plus bas pour explication je rajoute cette étape au lieu de mettre directement this.minutes + ":" + this.secondes; a la ligne d'en dessous pour éviter que après avoir rechargé la page, seul les deux points ":" s'affichent avant que les valeurs this.minutes et this.secondes soit récupérer. C'est purement esthétique.
+            //Hack to prevent a display bug when reloading the page with a slow internet connection (only for aesthetic purpose)
+            this.remainingTime = this.minutes + ":" + this.secondes;
             document.getElementById("resaTimer").innerHTML = this.remainingTime;
             sessionStorage.setItem("SStimer", this.counter);
         }
         
         if (this.counter === 0) {
             clearInterval(this.timeInterval);
-            
-            ///tout le bloc suivant *** *** même action que le bouton annuler. On peut peut être regrouper les actions sur le bouton annuler dans une méthode dans la classe réservation et plutot que copier / coller le code ici on appelle juste cette méthode cancelReservation() ?
-            
-            ///***
             $(".cancelBtn").css("display", "none");
             $("#canvas").css("display", "none");
-            document.getElementById("reservationBtn").disabled = false; //inutile ? 
 
             //vu que l'on est plus dans l'ajaxGet on ne peut plus utiliser currentStation.available_bikes pour mettre à jour la valeur donc on récupère la valeur html du champ "velo disponible", on le converti en nombre et on lui ajoute 1
+            //Hack to display correct expected available bikes number since we are not sending the reservation to the server
             document.getElementById("station-dispo").innerHTML = Number(document.getElementById("station-dispo").innerHTML) + 1;
 
-            //Active les inputs
+            //Display text and thanks
             $( ":text" ).css("display", "block");
             $("#thanksText").css("display", "none");
 
-            //Retire le texte de "Ma réservation"
+            //Clear "Ma réservation" information
             document.getElementById("resaName").innerHTML = "";
             document.getElementById("resaName").innerHTML = "Vous n'avez aucune réservation en cours";
             document.getElementById("resaStation").innerHTML = "";
             document.getElementById("resaTimerText").innerHTML = "";
 
 
-            //Supprimer de la réservation du sessionStorage !! // on utilise pas un sessionStorage.clear() car sinon SSinitialTimer est supprimée également et cela cause un bug dans stopTimer() puisque this.counter = sessionStorage.getItem("SSinitialTimer") ne vaut pas 1200 mais 0/null/[]
-//          sessionStorage.clear();
+            //Clear sessionStorage except SSinitialTimer
             sessionStorage.removeItem("SSstationName");
             sessionStorage.removeItem("SSavailableBike");
             sessionStorage.removeItem("SSavailableBike")
             
-            //***
-            
-//            this.counter = sessionStorage.getItem("SSinitialTimer"); //réinitialise le counter a 1200 pour le prochain départ. Inutile a priori. Pourquoi ? Car quand on relance une résa this.counter = counter ( avec counter param de l'objet timer = 1200) ? 
-            
-            
+         
+            //Display a message to alert the user reservation is over
             document.getElementById("resaTimer").innerHTML = "";
             document.getElementById("resaTimerText").innerHTML = "Votre réservation a expiré.";
             
-            // Fait disparaitre "Votre réservation a expiré" après 3 secondes
+            // Hide "Votre réservation a expiré" after 3 seconds
             this.delayedExpired = setTimeout(this.hideExpired.bind(this), 3000);
         }
     }
@@ -87,12 +79,12 @@ class Timer{
     stopTimer(){
         clearInterval(this.timeInterval);
         this.flag = "stopped"
-        this.counter = sessionStorage.getItem("SSinitialTimer"); // on récupère la valeur du counter initial défini a l'instanciation de l'objet et on le réinjecte ici pour relancer le compteur a 1200 secondes. Fonctionne en métant directement this.counter = 1200 mais perd son coté réutilisable en objet car si je veux un autre timer c'est hard codé ici. 
+        this.counter = sessionStorage.getItem("SSinitialTimer"); //Reset timer with intial counter (1200s)
         document.getElementById("resaTimer").innerHTML = "";
         document.getElementById("resaTimerText").innerHTML = "";
     }
     
-    // Methode pour faire disparaitre "Votre réservation a expiré" après 3 secondes
+    // Method to hide "Votre réservation a expiré"
     hideExpired(){
         document.getElementById("resaTimerText").innerHTML = "";
     }  

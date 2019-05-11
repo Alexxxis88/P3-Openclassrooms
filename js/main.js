@@ -3,35 +3,35 @@
 // ------------- Header ---------------- //
 // ------------------------------------- //
 
-//Scroll fluide
+//Smooth Scroling
 
 $(document).ready(function() {
-		$(".js-scrollTo").on("click", function() { // Au clic sur un élément
-			let section = $(this).attr("href"); // Section cible
-			let speed = 750; // Durée de l'animation (en ms)
-			$("html, body").animate( { scrollTop: $(section).offset().top }, speed ); // le défilement s'opère
+		$(".js-scrollTo").on("click", function() {
+			let section = $(this).attr("href");
+			let speed = 750;
+			$("html, body").animate( { scrollTop: $(section).offset().top }, speed );
 			return;
 		});
 	});
 
 
 
-// Menu burger
-function myFunction(x) {   // changer l'affichage du bouton
+// Burger menu
+function myFunction(x) {
   x.classList.toggle("change");  
 }
 
-$("#burgerMenu").on("click", () => { // afficher / masquer le menu
+$("#burgerMenu").on("click", () => { 
    $("#burgerNav").toggle();
 });
 
 
 // ------------------------------------- //
-// -------------Diaporama -------------- //
+// -------------Carousel -------------- //
 // ------------------------------------- //
 
-// Instanciation du Diaporama
-let Slider = new Diaporama("imagesCarousel",[
+// Carousel objet instantiation
+let Slider = new Carousel("imagesCarousel",[
         "img/pic1.jpg",
         "img/pic2.jpg",
         "img/pic3.jpg",
@@ -45,24 +45,26 @@ let Slider = new Diaporama("imagesCarousel",[
         "Réservez, signez...",
         "Roulez !"
         ]
-                          );
+        );
+
 
 
 // ------------------------------------- //
 // ---------------- Map ---------------- //
 // ------------------------------------- //
 
-// Instanciation de la Map
+// Map objet instantiation
 
 let biclooMap = new Map("biclooMap",[47.2172500, -1.5533600],"https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png");
 
 
+
 // ------------------------------------- //
-// -------------- Station -------------- //
+// -------------- Stations -------------- //
 // ------------------------------------- //
 
 
-// Instanciation de l'objet Stations
+// Stations objet instantiation 
 
 let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooMap);
 
@@ -73,7 +75,7 @@ let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "N
 // ------------------------------------- //
 
 
-// Instanciation de l'objet Reservation
+// Reservation objet instantiation
 
 let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooStations)
 
@@ -84,7 +86,7 @@ let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "N
 // ------------------------------------- //
 
 
-// Instanciation de l'objet Canvas
+// Canvas objet instantiation
 
 let myCanvas = new Canvas(); 
 myCanvas.init();
@@ -95,7 +97,7 @@ myCanvas.init();
 // ------------------------------------- //
 
 
-// Instanciation de l'objet Timer
+// Timer object istantiation
 
 let timer = new Timer("resaTimer", 1200); 
 
@@ -103,10 +105,10 @@ let timer = new Timer("resaTimer", 1200);
 
 
 // ------------------------------------- //
-// --------- Gestion du Storage -------- //
+// --------- Webstorage Manager -------- //
 // ------------------------------------- //
 
-//Sauvegarde du prénom et nom
+//First Name & Last Name storage
 $("#first_name" ).keyup( function() {
  localStorage.setItem("LSfirstName", $("#first_name" ).val());
 });
@@ -114,9 +116,7 @@ $("#first_name" ).keyup( function() {
 
 if (localStorage.getItem("LSfirstName")){
      document.getElementById("first_name").value = localStorage.getItem("LSfirstName"); 
-    //pourquoi $("#first_name" ).val() ne marche pas a la place de document.getElementById("first_name").value
 }
-
 
 $("#last_name" ).keyup( function() {
  localStorage.setItem("LSlastName", $("#last_name").val());
@@ -125,11 +125,10 @@ $("#last_name" ).keyup( function() {
 
 if (localStorage.getItem("LSlastName") ){
      document.getElementById("last_name").value = localStorage.getItem("LSlastName"); 
-    //pourquoi $("#first_name" ).val() ne marche pas a la place de document.getElementById("first_name").value
 }
 
 
-//Si on a déja une réservation en cours dans sessionStorage
+//If there is already a reservation stored in sessionStorage
 if (sessionStorage.getItem("SSstationName") && 
     sessionStorage.getItem("SSavailableBike") &&
     localStorage.getItem("LSfirstName") &&
@@ -137,19 +136,19 @@ if (sessionStorage.getItem("SSstationName") &&
     sessionStorage.getItem("SStimer")){  
 
     
-    //le timer continue à décompter a partir de sa dernier valeur
-    timer.counter = sessionStorage.getItem("SStimer"); // le timer prends la dernière valeur enregistré dans le SS
-    document.getElementById("resaTimer").innerHTML =  timer.remainingTime // on affiche cette valeur comme valeur intial pour relancer le décompte
-    timer.startTimer(); // on relance le décompte
+    //Timer keeps going o from its last known value
+    timer.counter = sessionStorage.getItem("SStimer");
+    document.getElementById("resaTimer").innerHTML =  timer.remainingTime;
+    timer.startTimer();
 
     
-    //Ajout des infos de sessionStorage dans la section "Ma réservation"
+    //Recovering reversation information from sessionStorage in "My reservation" section
     document.getElementById("resaName").innerHTML = "";
-    document.getElementById("resaName").innerHTML = "Bonjour " + localStorage.getItem("LSfirstName").toUpperCase().bold() + " " + localStorage.getItem("LSlastName").toUpperCase().bold() //rajouter.bold() a checker  sur autre navigateurs
+    document.getElementById("resaName").innerHTML = "Bonjour " + localStorage.getItem("LSfirstName").toUpperCase().bold() + " " + localStorage.getItem("LSlastName").toUpperCase().bold();
     document.getElementById("resaStation").innerHTML = "";
     document.getElementById("resaStation").innerHTML = "Vous avez une réservation en cours à la station " + sessionStorage.getItem("SSstationName").bold();
     document.getElementById("resaTimerText").innerHTML = "";
-    document.getElementById("resaTimerText").innerHTML = "Votre réservation expirera dans&nbsp;"; //rajouter.bold() a checker  sur autre navigateurs
+    document.getElementById("resaTimerText").innerHTML = "Votre réservation expirera dans&nbsp;";
     $(".footerBtn").css("display", "block");       
 }
 
@@ -157,10 +156,9 @@ if (sessionStorage.getItem("SSstationName") &&
 
 
 // ------------------------------------- //
-// ----- Modal Box Mentios Légales ----- //
+// ----- Modal Box Legal Notice ----- //
 // ------------------------------------- //
 
-//pas de Jquerry car WINDOW n'est pas selectionnable en Jquery
 const modal = document.getElementById("myModal");
 const btn = document.getElementById("legalNotice");
 const span = document.getElementsByClassName("close")[0];

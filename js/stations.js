@@ -1,4 +1,4 @@
-// ------------------------------------- //
+ // ------------------------------------- //
 // -------------- Stations ------------- //
 // ------------------------------------- //
 
@@ -9,7 +9,7 @@ class Stations {
         this.apiKey = apiKey;
         this.myMap = myMap;
         this.markersCluster = new L.MarkerClusterGroup();
-        this.selectedStationNumber = []; //récupère le numéro de la sation sélectionnée (utilisé dans reservation.js pour définir l'url de l'API)
+        this.selectedStationNumber = [];
         this.greenIcon  = L.icon({
                     iconUrl: "img/marker-green.png",
                     iconSize:     [45, 45],
@@ -25,47 +25,45 @@ class Stations {
                     iconSize:     [45, 45],
                     iconAnchor:   [0, 0]
                     });
-//        this.markerColor = [];
-//        this.Icon  = L.icon({
-//                    iconUrl: "img/marker-" + this.markerColor + ".png",
-//                    iconSize:     [45, 45],
-//                    iconAnchor:   [0, 0]
-//                    });
         
         
-        
-        // Code pour récupérer les informations de toutes les stations 
+        // Get information for all stations
         ajaxGet(this.apiURL + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
             let allStations = JSON.parse(data);
             allStations.forEach((station) => {
                 
-                //Couleur des marqueurs en fonction du nb de vélos 
-                
-                //permet d'afficher le maqueur de la station en rouge si la station est fermée
-                if(station.status === "CLOSED"){ // 0 vélo disponible ou station fermée
-//                    this.markerColor = "red";
-                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.redIcon });//logo rouge
+                //Display marker color depending on station status
+                if(station.status === "CLOSED"){
+                    this.markerColor = "red";
+                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.redIcon });
                     this.markersCluster.addLayer(this.marker)
                 }
-                
-                else if(station.available_bikes < station.bike_stands / 2){ // moins de la moitié des vélos sont disponibles
-//                    this.markerColor = "orange";
-                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.orangeIcon});//logo orange
+                else if(station.available_bikes < station.bike_stands / 2){
+                    this.markerColor = "orange";
+                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.orangeIcon});
                     this.markersCluster.addLayer(this.marker)                   
                 }
                 else { // plus de la moitié des vélos disponibles
-//                    this.markerColor = "green";
-                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.greenIcon}); //logo vert
+                    this.markerColor = "green";
+                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.greenIcon}); 
                     this.markersCluster.addLayer(this.marker)
                 } 
-                this.myMap.mapTemplate.addLayer(this.markersCluster); //ajout des marqueurs au layer markersCluster
                 
-          
+                //Add the markersCluster layer containing all the makers to the map template
+                this.myMap.mapTemplate.addLayer(this.markersCluster);
                 
-                //Affichage des infos dans le panneau Détails
-                this.marker.addEventListener("click", () => { //savoir expliquer pourquoi fonction fléchée plutot que function(), joue sur la valeur de this et le fait d'utiliser ou non .bind(this)
+              
+                
+                //Display selected station information in the side pannel
+                this.marker.addEventListener("click", () => {
+                    
+                    //On mobile & tablets, a clic on a marker scrolls to Information Pannel
+                    if (/Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile/i.test(navigator.userAgent)){
+                        let speed = 750;
+                        $("html, body").animate( { scrollTop: $("#infoStation").offset().top }, speed );
+                    }
                         
-                     if( station.status === "CLOSED" ){
+                    if( station.status === "CLOSED" ){
                         $(".infoColor").css("background-color", "red");
                         document.getElementById("station-status").innerHTML = "";
                         document.getElementById("station-status").innerHTML += "Fermée";
@@ -76,7 +74,7 @@ class Stations {
                         $("#canvas").css("display", "none");
                     }
                     
-                    //si le nombre de vélo dispo est égal a zéro OU si le nom de la station associé au marker sur lequel je clic = celui de la réservation en cours ET que le nombre de vélo dans sessionStorage = 0, alors on désactive le bouton de réservation etc
+                    //Hide Reservation button and whatnot if no bikes left or if already a reserved bike on the station we clicked on AND no bike left
                     else if(station.name.split("-")[1] == sessionStorage.getItem("SSstationName") && 
                        sessionStorage.getItem("SSavailableBike") == 0 || station.available_bikes === 0 ){
                         $(".infoColor").css("background-color", "orange");
@@ -111,21 +109,17 @@ class Stations {
                         $("#canvas").css("display", "none");
                     }
                     
-                    document.getElementById("reservationBtn").disabled = false; //inutile ??
                     document.getElementById("station-status").innerHTML = "";
                     document.getElementById("station-status").innerHTML += "Ouverte";
                     document.getElementById("station-nom").innerHTML = "";
                     document.getElementById("station-nom").innerHTML += station.name.split("-")[1];
-                    document.getElementById("station-adresse").innerHTML = "";
-                    document.getElementById("station-adresse").innerHTML += station.address;
-                    document.getElementById("station-capacite").innerHTML = "";
-                    document.getElementById("station-capacite").innerHTML += station.bike_stands;
+                    document.getElementById("station-address").innerHTML = "";
+                    document.getElementById("station-address").innerHTML += station.address;
+                    document.getElementById("station-capacity").innerHTML = "";
+                    document.getElementById("station-capacity").innerHTML += station.bike_stands;
                     
                     
-                    
-                    //Si station name du marker = station name du sessionStorage alors station-dispo =  nb de vélo du sessionStorage
-                    //fait en sorte de "garder en mémoire" le nouveau nombre de vélo (availablebikes-1). Si on résa un vélo puis reclique sur le marker de la station (qu'on recharge la page ou non), le bon nombre dé vélo s'affiche. 
-                    //sert a contourner le fait qu'on envoi aucune info au serveur
+                    //Hack to display correct expected available bikes number since we are not sending the reservation to the server
                     if(station.name.split("-")[1] == sessionStorage.getItem("SSstationName")){
                         document.getElementById("station-dispo").innerHTML = "";
                         document.getElementById("station-dispo").innerHTML += sessionStorage.getItem("SSavailableBike");  
@@ -134,9 +128,8 @@ class Stations {
                         document.getElementById("station-dispo").innerHTML += station.available_bikes;
                     }
                     
-                      
-                    
-                    this.selectedStationNumber = station.number; // sert a récupérer le numéro de la sation sélectionné
+                    //Get the selected Station number to be used in Reservation class
+                    this.selectedStationNumber = station.number; 
                 });           
             })
         }.bind(this));  
