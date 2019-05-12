@@ -88,19 +88,19 @@ li{
 }
 
 /* Rotate the first bar */
-.change .bar1 {
+.bar1.change{
     -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
         transform: rotate(-45deg) translate(-9px, 6px) ;
     background-color: rgb(26,154,229);
 }
 
 /* Fade out the second bar */
-.change .bar2 {
+.bar2.change{
     opacity: 0;
 }
 
 /* Rotate the third bar */
-.change .bar3 {
+.bar3.change{
     -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
         transform: rotate(45deg) translate(-8px, -8px) ;
     background-color: rgb(26,154,229);
@@ -443,11 +443,6 @@ p{
 
 
 /* ----- Media Queries ----- */
-
-
-/* Very big screens */
-@media all and (min-width:1280px){
-}
 
 /* Desktop computers */
 @media all and (min-width:992px){

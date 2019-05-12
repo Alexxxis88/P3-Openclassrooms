@@ -19,7 +19,6 @@ class Reservation {
             let lastName = $("#last_name").val()
             let correctFormat = /^[a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+([-'\s][a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+){0,}$/i
            
-
             //Prevent empty fields
             if (firstName.length === 0 || lastName.length === 0){ 
                 alert("Merci de remplir les champs PRENOM et NOM")
@@ -59,7 +58,6 @@ class Reservation {
             //Cancel "votre réservation a expiré" fade out to prevent display bugs
             clearTimeout(timer.delayedExpired);
 
-                
             //Reservation validation for the selected station  
             ajaxGet(this.apiURL + "/" + this.allstations.selectedStationNumber + "?contract=" + this.contractName + "&apiKey=" + this.apiKey,               function(data) {
                     let currentStation = JSON.parse(data);
@@ -82,10 +80,8 @@ class Reservation {
                     $("label, :text, #thanksText, #canvas, #signBtn, #eraseBtn " ).css("display", "none");
                     $("#thanksText, .cancelBtn").css("display", "block");
 
-
                     // Hide "merci pour votre réservation" after 3 seconds
                     this.delayedThanks = setTimeout(this.hideThanks.bind(this), 3000);
-
 
                     //Display reservation information in "Ma réservation"
                     document.getElementById("resaName").innerHTML = "";
@@ -104,7 +100,7 @@ class Reservation {
        
         
         //Erase Button Eventlistener
-        $("#eraseBtn").on( "click", function(){
+        document.getElementById("eraseBtn").addEventListener("click", function(){
             myCanvas.clear();
         });
         
@@ -126,7 +122,6 @@ class Reservation {
             document.getElementById("resaName").innerHTML = "Vous n'avez aucune réservation en cours";
             document.getElementById("resaStation").innerHTML = "";
             document.getElementById("resaTimerText").innerHTML = "";
-
 
             //Clear sessionStorage except SSinitialTimer
             sessionStorage.removeItem("SSstationName");

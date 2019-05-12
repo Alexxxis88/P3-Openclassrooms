@@ -58,13 +58,11 @@ class Timer{
             document.getElementById("resaStation").innerHTML = "";
             document.getElementById("resaTimerText").innerHTML = "";
 
-
             //Clear sessionStorage except SSinitialTimer
             sessionStorage.removeItem("SSstationName");
             sessionStorage.removeItem("SSavailableBike");
             sessionStorage.removeItem("SSavailableBike")
             
-         
             //Display a message to alert the user reservation is over
             document.getElementById("resaTimer").innerHTML = "";
             document.getElementById("resaTimerText").innerHTML = "Votre réservation a expiré.";

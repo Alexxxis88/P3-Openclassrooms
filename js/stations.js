@@ -26,7 +26,6 @@ class Stations {
                     iconAnchor:   [0, 0]
                     });
         
-        
         // Get information for all stations
         ajaxGet(this.apiURL + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
             let allStations = JSON.parse(data);
@@ -49,15 +48,13 @@ class Stations {
                 //Add the markersCluster layer containing all the makers to the map template
                 this.myMap.mapTemplate.addLayer(this.markersCluster);
                 
-              
-                
                 //Display selected station information in the side pannel
                 this.marker.addEventListener("click", () => {
                     
                     //On mobile & tablets, a clic on a marker scrolls to Information Pannel
                     if (/Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile/i.test(navigator.userAgent)){
                         let speed = 750;
-                        $("html, body").animate( { scrollTop: $("#infoStation").offset().top }, speed );
+                        $("html").animate( { scrollTop: $("#infoStation").offset().top }, speed );
                     }
                         
                     if( station.status === "CLOSED" ){
@@ -97,7 +94,6 @@ class Stations {
                     document.getElementById("station-address").innerHTML += station.address;
                     document.getElementById("station-capacity").innerHTML = "";
                     document.getElementById("station-capacity").innerHTML += station.bike_stands;
-                    
                     
                     //Hack to display correct expected available bikes number since we are not sending the reservation to the server
                     if(station.name.split("-")[1] == sessionStorage.getItem("SSstationName")){

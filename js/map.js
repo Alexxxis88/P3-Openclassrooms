@@ -3,7 +3,6 @@
 // ---------------- Map ---------------- //
 // ------------------------------------- //
 
-
 class Map {
     constructor(id, coordinates, osmTemplate){
         this.mapId = id;
