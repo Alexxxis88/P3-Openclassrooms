@@ -47,7 +47,7 @@ let biclooStations = new Stations("https://api.jcdecaux.com/vls/v1/stations", "N
 
 // Reservation objet instantiation
 
-let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooStations)
+let reservation = new Reservation("https://api.jcdecaux.com/vls/v1/stations", "Nantes", "ddcc1734e8c4df93e09e6924487d563bce7edc81", biclooStations);
 
 
 
@@ -78,21 +78,14 @@ let timer = new Timer("resaTimer", 1200);
 // ------------------------------------- //
 
 //First Name & Last Name storage
-$("#first_name" ).keyup( function() {
- localStorage.setItem("LSfirstName", $("#first_name" ).val());
+$("#first_name, #last_name" ).keyup( function() {
+    localStorage.setItem("LSfirstName", $("#first_name" ).val());
+    localStorage.setItem("LSlastName", $("#last_name").val());
 });
 
-if (localStorage.getItem("LSfirstName")){
-     document.getElementById("first_name").value = localStorage.getItem("LSfirstName"); 
-}
-
-$("#last_name" ).keyup( function() {
- localStorage.setItem("LSlastName", $("#last_name").val());
-});
-
-
-if (localStorage.getItem("LSlastName") ){
-     document.getElementById("last_name").value = localStorage.getItem("LSlastName"); 
+if ( localStorage.getItem("LSfirstName") || localStorage.getItem("LSlastName")){
+     document.getElementById("first_name").value = localStorage.getItem("LSfirstName");
+    document.getElementById("last_name").value = localStorage.getItem("LSlastName"); 
 }
 
 

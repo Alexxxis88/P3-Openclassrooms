@@ -19,14 +19,14 @@ class Carousel {
         this.pauseBtn = document.querySelector("#pauseBtn");
         
         // Create the <img> element that will carry the slider
-        this.newImage = document.createElement("img")
+        this.newImage = document.createElement("img");
         this.newImage.id = "js-newImage";
         this.newImage.src = this.currentSlide;
         document.getElementById(this.idSlide).appendChild(this.newImage);
         
         
         // Create the <p> element that will carry the text
-        this.newText = document.createElement("p")
+        this.newText = document.createElement("p");
         this.newText.id = "js-newText";
         this.newText.src = this.currentText;
         document.getElementById(this.idSlide).appendChild(this.newText);
@@ -48,25 +48,27 @@ class Carousel {
         if (this.imgNumber > (this.imagesSlider.length - 1) ){
             this.imgNumber = 0;
         }
+         this.displayNewImage(); 
+    }
+
+    reverseSlide(){
+        this.imgNumber--;
+        if (this.imgNumber < 0) {
+            this.imgNumber = this.imagesSlider.length-1;
+        }
+        this.displayNewImage();
+    }
+    
+    
+    // ---- Display the new image method ----
+    displayNewImage(){
         this.currentSlide = this.imagesSlider[this.imgNumber];
         this.newImage.src = this.currentSlide;        
         this.currentText = this.textsSlider[this.imgNumber];
         document.getElementById(this.newText.id).innerHTML = this.currentText; 
     }
 
-    reverseSlide(){
-        this.imgNumber--;
-        if (this.imgNumber < 0) {
-            this.imgNumber = this.imagesSlider.length-1
-        }
-        this.currentSlide = this.imagesSlider[this.imgNumber];
-        this.newImage.src = this.currentSlide; 
-        this.currentText = this.textsSlider[this.imgNumber];
-        document.getElementById(this.newText.id).innerHTML = this.currentText;
-    }
-
-
-    // ---- Pause, play and play-pause----
+    // ---- Pause, play and play-pause ----
     pause(){
         this.pauseBtn.innerHTML = "&#9658;"; // Play logo code
         this.playing = false;

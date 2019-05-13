@@ -10,21 +10,6 @@ class Stations {
         this.myMap = myMap;
         this.markersCluster = new L.MarkerClusterGroup();
         this.selectedStationNumber = [];
-        this.greenIcon  = L.icon({
-                    iconUrl: "img/marker-green.png",
-                    iconSize:     [45, 45],
-                    iconAnchor:   [0, 0]
-                    });
-        this.orangeIcon  = L.icon({
-                    iconUrl: "img/marker-orange.png",
-                    iconSize:     [45, 45],
-                    iconAnchor:   [0, 0]
-                    });            
-        this.redIcon  = L.icon({
-                    iconUrl: "img/marker-red.png",
-                    iconSize:     [45, 45],
-                    iconAnchor:   [0, 0]
-                    });
         
         // Get information for all stations
         ajaxGet(this.apiURL + "?contract=" + this.contractName + "&apiKey=" + this.apiKey, function (data){
@@ -33,17 +18,16 @@ class Stations {
                 
                 //Display marker color depending on station status
                 if(station.status === "CLOSED"){
-                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.redIcon });
-                    this.markersCluster.addLayer(this.marker)
+                    this.markerColor("red");
                 }
                 else if(station.available_bikes < station.bike_stands / 2){
-                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.orangeIcon});
-                    this.markersCluster.addLayer(this.marker)                   
+                    this.markerColor("orange");                
                 }
                 else { // plus de la moitié des vélos disponibles
-                    this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.greenIcon}); 
-                    this.markersCluster.addLayer(this.marker)
+                    this.markerColor("green"); 
                 } 
+                this.marker = L.marker([station.position.lat, station.position.lng], {icon: this.icon}); 
+                this.markersCluster.addLayer(this.marker)
                 
                 //Add the markersCluster layer containing all the makers to the map template
                 this.myMap.mapTemplate.addLayer(this.markersCluster);
@@ -62,30 +46,26 @@ class Stations {
                         document.getElementById("station-status").innerHTML = "";
                         document.getElementById("station-status").innerHTML += "Fermée";
                         $("#reservationBtn, .infoResaBtn, #thanksText,#canvas ").css("display", "none");
-                        myCanvas.clear();
-                       
                     }
                     
                     //Hide Reservation button and whatnot if no bikes left or if already a reserved bike on the station we clicked on AND no bike left
                     else if(station.name.split("-")[1] == sessionStorage.getItem("SSstationName") && 
-                       sessionStorage.getItem("SSavailableBike") == 0 || station.available_bikes === 0 ){
+                        sessionStorage.getItem("SSavailableBike") == 0 || station.available_bikes === 0 ){
                         $(".infoColor").css("background-color", "orange");
                         $("#reservationBtn, #signBtn, #eraseBtn, .infoResaBtn, #thanksText, #canvas ").css("display", "none");
-                        myCanvas.clear();
                     }
                     else if(station.available_bikes < station.bike_stands / 2){
                         $(".infoColor").css("background-color", "orange");
                         $("#reservationBtn, :text").css("display", "block");
                         $("#signBtn, #eraseBtn, #canvas, .infoResaBtn, #thanksText ").css("display", "none");
-                        myCanvas.clear();
                     }
                     else{
                         $(".infoColor").css("background-color", "green");
                         $("#reservationBtn, :text").css("display", "block");
                         $("#signBtn, #eraseBtn, .infoResaBtn, #thanksText, #canvas").css("display", "none");
-                        myCanvas.clear();
                     }
                     
+                    myCanvas.clear(); 
                     document.getElementById("station-status").innerHTML = "";
                     document.getElementById("station-status").innerHTML += "Ouverte";
                     document.getElementById("station-nom").innerHTML = "";
@@ -109,7 +89,17 @@ class Stations {
                 });           
             })
         }.bind(this));  
-    }  
+    } 
+    
+    //Method to chance markers' color depending on stations' status
+    markerColor(color){
+         this.icon  = L.icon({
+                    iconUrl: "img/marker-" + color + ".png",
+                    iconSize:     [45, 45],
+                    iconAnchor:   [0, 0]
+                    });
+    }
+    
 }
 
 

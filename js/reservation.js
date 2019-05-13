@@ -16,17 +16,17 @@ class Reservation {
             
             //First and Last Name conformity check
             let firstName = $("#first_name").val();
-            let lastName = $("#last_name").val()
-            let correctFormat = /^[a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+([-'\s][a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+){0,}$/i
+            let lastName = $("#last_name").val();
+            let correctFormat = /^[a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+([-'\s][a-zA-ZçÇñÑàâäãÀÂÁÄÃéëêèÉÈÊûÛôÔÖÕöõÎÏîï]+){0,}$/i;
            
             //Prevent empty fields
             if (firstName.length === 0 || lastName.length === 0){ 
-                alert("Merci de remplir les champs PRENOM et NOM")
+                alert("Merci de remplir les champs PRENOM et NOM");
             } 
 
             //Prevent non-conform names
             else if (firstName.length < 2 || lastName.length < 2 || !correctFormat.test(firstName) || !correctFormat.test(lastName)){   
-                    alert("Vérifiez les champs NOM et PRENOM")
+                    alert("Vérifiez les champs NOM et PRENOM");
             }
 
             //If names are correct
@@ -42,13 +42,13 @@ class Reservation {
             
             //Signature length check
             if(myCanvas.counter <= 40){
-                alert("Votre signature est trop courte. Merci de la compléter ")
+                alert("Votre signature est trop courte. Merci de la compléter ");
             }
             
             else{
                 //Starting Timer
                 if(timer.flag === "running"){
-                    timer.stopTimer()
+                    timer.stopTimer();
                     timer.startTimer();
                 }
                 else{ 
@@ -69,7 +69,7 @@ class Reservation {
                     localStorage.getItem("LSlastName")){
                         alert("Attention, vous avez déjà une réservation en cours à la station " + sessionStorage.getItem("SSstationName") + "." +
                               "\n" + 
-                              "\nCette nouvelle réservation annule l'ancienne.")
+                              "\nCette nouvelle réservation annule l'ancienne.");
                     }
 
                     currentStation.available_bikes--;
@@ -126,7 +126,7 @@ class Reservation {
             //Clear sessionStorage except SSinitialTimer
             sessionStorage.removeItem("SSstationName");
             sessionStorage.removeItem("SSavailableBike");
-            sessionStorage.removeItem("SSavailableBike")
+            sessionStorage.removeItem("SSavailableBike");
         }); 
     }
     
